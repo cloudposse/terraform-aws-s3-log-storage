@@ -26,7 +26,7 @@ module "log_storage" {
 | `namespace`               | ``                  | Namespace (e.g. `cp` or `cloudposse`)                                                   | Yes      |
 | `stage`                   | ``                  | Stage (e.g. `prod`, `dev`, `staging`)                                                   | Yes      |
 | `name`                    | ``                  | Name  (e.g. `log`)                                                                      | Yes      |
-| `acl`                     | `log-delivery-write`| The canned ACL to apply                                                                 | Np       |
+| `acl`                     | `log-delivery-write`| The canned ACL to apply                                                                 | No       |
 | `prefix`                  | ``                  | Object key prefix identifying one or more objects to which the rule applies.            | Yes      |
 | `standard_transition_days`| `30`                | Number of days to persist in the standard storage tier before moving to the glacier tier| No       |
 | `glacier_transition_days` | `60`                | Number of days after which to move the data to the glacier storage tier                 | No       |
