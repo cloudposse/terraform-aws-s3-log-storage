@@ -1,9 +1,20 @@
 variable "name" {}
-variable "namespage" {}
+
+variable "namespace" {}
+
 variable "stage" {}
 
 variable "tags" {
   default = {}
+}
+
+variable "delimiter" {
+  default = "-"
+}
+
+variable "attributes" {
+  type    = "list"
+  default = []
 }
 
 variable "acl" {
