@@ -9,8 +9,24 @@ module "default_label" {
 }
 
 resource "aws_s3_bucket" "default" {
-  bucket = "${module.default_label.id}"
-  acl    = "${var.acl}"
+  bucket        = "${module.default_label.id}"
+  acl           = "${var.acl}"
+  region        = "${var.region}"
+  force_destroy = "${var.force_destroy}"
+  policy        = "${var.policy}"
+
+  versioning {
+    enabled = "${var.versioning_enabled}"
+  }
+
+  noncurrent_version_expiration {
+    days = "${var.noncurrent_version_expiration_days}"
+  }
+
+  noncurrent_version_transition {
+    days          = "${var.noncurrent_version_transition_days}"
+    storage_class = "GLACIER"
+  }
 
   lifecycle_rule {
     id      = "${module.default_label.id}"
