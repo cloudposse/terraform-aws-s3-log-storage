@@ -31,6 +31,7 @@ module "log_storage" {
 | `prefix`                            | ``                  | Object key prefix identifying one or more objects to which the rule applies             | No       |
 | `region`                            | ``                  | If specified, the AWS region this bucket should reside in. Defaults to region of callee.| No       |
 | `force_destroy`                     | ``                  | All objects will be forcefully deleted from the bucket when bucket destroyed            | No       |
+| `lifecycle_rule_enabled`            | `true`              | Enable object lifecycle rules on this bucket                                            | No       |
 | `versioning_enabled`                | `false`             | Versioning is a means of keeping multiple variants of an object in the same bucket      | No       |
 | `noncurrent_version_transition_days`| `30`                | Number of days to persist in the standard storage tier before moving to the glacier tier| No       |
 | `noncurrent_version_expiration_days`| `90`                | Specifies when noncurrent object versions expire                                        | No       |

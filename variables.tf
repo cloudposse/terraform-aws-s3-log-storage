@@ -42,6 +42,11 @@ variable "force_destroy" {
   default     = "false"
 }
 
+variable "lifecycle_rule_enabled" {
+  description = "(Optional) enable lifecycle events on this bucket"
+  default     = "true"
+}
+
 variable "versioning_enabled" {
   description = "(Optional) A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket."
   default     = "false"

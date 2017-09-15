@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "default" {
 
   lifecycle_rule {
     id      = "${module.default_label.id}"
-    enabled = true
+    enabled = "${var.lifecycle_rule_enabled}"
 
     prefix = "${var.prefix}"
     tags   = "${module.default_label.tags}"
