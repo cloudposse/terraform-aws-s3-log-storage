@@ -28,7 +28,7 @@ module "log_storage" {
 | `name`                              | ``                  | Name  (e.g. `log`)                                                                      | Yes      |
 | `acl`                               | `log-delivery-write`| The canned ACL to apply                                                                 | No       |
 | `policy`                            | ``                  | A valid bucket policy JSON document                                                     | No       |
-| `prefix`                            | ``                  | Object key prefix identifying one or more objects to which the rule applies             | No       |
+| `prefix`                            | ``                  | Object key prefix identifying one or more objects to which the lifecycle rule applies   | No       |
 | `region`                            | ``                  | If specified, the AWS region this bucket should reside in. Defaults to region of callee.| No       |
 | `force_destroy`                     | ``                  | All objects will be forcefully deleted from the bucket when bucket destroyed            | No       |
 | `lifecycle_rule_enabled`            | `true`              | Enable object lifecycle rules on this bucket                                            | No       |
@@ -41,8 +41,9 @@ module "log_storage" {
 
 ## Outputs
 
-| Name                  | Description               |
-|:----------------------|:--------------------------|
-| `bucket_domain_name`  | Domain name of bucket     |
-| `bucket_id`           | Bucket Name (aka ID)      |
-| `bucket_arn`          | Bucket ARN                |
+| Name                  | Description                           |
+|:----------------------|:--------------------------------------|
+| `bucket_domain_name`  | FQDN of bucket                        |
+| `bucket_id`           | Bucket Name (aka ID)                  |
+| `bucket_arn`          | Bucket ARN                            |
+| `prefix`              | Prefix configured for lifecycle rules |
