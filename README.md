@@ -27,6 +27,7 @@ module "log_storage" {
 | `stage`                             | ``                  | Stage (e.g. `prod`, `dev`, `staging`)                                                   | Yes      |
 | `name`                              | ``                  | Name  (e.g. `log`)                                                                      | Yes      |
 | `acl`                               | `log-delivery-write`| The canned ACL to apply                                                                 | No       |
+| `policy`                            | ``                  | A valid bucket policy JSON document.                                                    | No       |
 | `prefix`                            | ``                  | Object key prefix identifying one or more objects to which the rule applies.            | No       |
 | `region`                            | ``                  | If specified, the AWS region this bucket should reside in. Defaults to region of callee.| No       |
 | `force_destroy`                     | ``                  | A boolean that indicates all objects should be deleted from the bucket so that the      | No       |
