@@ -21,22 +21,27 @@ module "log_storage" {
 
 
 ## Variables
-|  Name                     |  Default            |  Description                                                                            | Required |
-|:--------------------------|:-------------------:|:----------------------------------------------------------------------------------------|:--------:|
-| `namespace`               | ``                  | Namespace (e.g. `cp` or `cloudposse`)                                                   | Yes      |
-| `stage`                   | ``                  | Stage (e.g. `prod`, `dev`, `staging`)                                                   | Yes      |
-| `name`                    | ``                  | Name  (e.g. `log`)                                                                      | Yes      |
-| `acl`                     | `log-delivery-write`| The canned ACL to apply                                                                 | No       |
-| `prefix`                  | ``                  | Object key prefix identifying one or more objects to which the rule applies.            | Yes      |
-| `standard_transition_days`| `30`                | Number of days to persist in the standard storage tier before moving to the glacier tier| No       |
-| `glacier_transition_days` | `60`                | Number of days after which to move the data to the glacier storage tier                 | No       |
-| `glacier_transition_days` | `90`                | Number of days after which to expunge the objects                                       | No       |
-
-
+|  Name                               |  Default            |  Description                                                                            | Required |
+|:------------------------------------|:-------------------:|:----------------------------------------------------------------------------------------|:--------:|
+| `namespace`                         | ``                  | Namespace (e.g. `cp` or `cloudposse`)                                                   | Yes      |
+| `stage`                             | ``                  | Stage (e.g. `prod`, `dev`, `staging`)                                                   | Yes      |
+| `name`                              | ``                  | Name  (e.g. `log`)                                                                      | Yes      |
+| `acl`                               | `log-delivery-write`| The canned ACL to apply                                                                 | No       |
+| `prefix`                            | ``                  | Object key prefix identifying one or more objects to which the rule applies.            | No       |
+| `region`                            | ``                  | If specified, the AWS region this bucket should reside in. Defaults to region of callee.| No       |
+| `force_destroy`                     | ``                  | A boolean that indicates all objects should be deleted from the bucket so that the      | No       |
+|                                     |                     | bucket can be destroyed without error. These objects are not recoverable.               |          |
+| `versioning_enabled`                | `false`             | Versioning is a means of keeping multiple variants of an object in the same bucket.     | No       |
+| `noncurrent_version_transition_days`| `30`                | Number of days to persist in the standard storage tier before moving to the glacier tier| No       |
+| `noncurrent_version_expiration_days`| `90`                | Specifies when noncurrent object versions expire                                        | No       |
+| `standard_transition_days`          | `30`                | Number of days to persist in the standard storage tier before moving to the glacier tier| No       |
+| `glacier_transition_days`           | `60`                | Number of days after which to move the data to the glacier storage tier                 | No       |
+| `glacier_transition_days`           | `90`                | Number of days after which to expunge the objects                                       | No       |
 
 ## Outputs
 
 | Name                  | Description               |
 |:----------------------|:--------------------------|
 | `bucket_domain_name`  | Domain name of bucket     |
-| `bucket_id`           | ID of bucket              |
+| `bucket_id`           | Bucket Name (aka ID)      |
+| `bucket_arn`          | Bucket ARN                |

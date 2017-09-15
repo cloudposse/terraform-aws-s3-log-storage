@@ -48,11 +48,11 @@ variable "versioning_enabled" {
 }
 
 variable "noncurrent_version_expiration_days" {
-  description = "(Optional) Specifies when noncurrent object versions expire (documented below)."
+  description = "(Optional) Specifies when noncurrent object versions expire."
   default     = "90"
 }
 
-variable "noncurrent_version_transition" {
+variable "noncurrent_version_transition_days" {
   description = "(Optional) Specifies when noncurrent object versions transitions"
   default     = "30"
 }
