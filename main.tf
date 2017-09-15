@@ -19,21 +19,21 @@ resource "aws_s3_bucket" "default" {
     enabled = "${var.versioning_enabled}"
   }
 
-  noncurrent_version_expiration {
-    days = "${var.noncurrent_version_expiration_days}"
-  }
-
-  noncurrent_version_transition {
-    days          = "${var.noncurrent_version_transition_days}"
-    storage_class = "GLACIER"
-  }
-
   lifecycle_rule {
     id      = "${module.default_label.id}"
     enabled = true
 
     prefix = "${var.prefix}"
     tags   = "${module.default_label.tags}"
+
+    noncurrent_version_expiration {
+      days = "${var.noncurrent_version_expiration_days}"
+    }
+
+    noncurrent_version_transition {
+      days          = "${var.noncurrent_version_transition_days}"
+      storage_class = "GLACIER"
+    }
 
     transition {
       days          = "${var.standard_transition_days}"
