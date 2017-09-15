@@ -37,7 +37,7 @@ module "log_storage" {
 | `noncurrent_version_expiration_days`| `90`                | Specifies when noncurrent object versions expire                                        | No       |
 | `standard_transition_days`          | `30`                | Number of days to persist in the standard storage tier before moving to the glacier tier| No       |
 | `glacier_transition_days`           | `60`                | Number of days after which to move the data to the glacier storage tier                 | No       |
-| `glacier_transition_days`           | `90`                | Number of days after which to expunge the objects                                       | No       |
+| `expiration_days`                   | `90`                | Number of days after which to expunge the objects                                       | No       |
 
 ## Outputs
 
