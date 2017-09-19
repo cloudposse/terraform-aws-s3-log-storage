@@ -63,7 +63,7 @@ variable "noncurrent_version_transition_days" {
 }
 
 variable "standard_transition_days" {
-  description = "Number of days to persist in the standard storage tier before moving to the glacier tier"
+  description = "Number of days to persist in the standard storage tier before moving to the infrequent access tier"
   default     = "30"
 }
 
