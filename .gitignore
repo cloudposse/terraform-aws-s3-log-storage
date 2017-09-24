@@ -4,6 +4,6 @@
 *.lock.info
 
 # Module directory
-.terraform/
-
+.terraform
 .idea
+*.iml

@@ -5,6 +5,7 @@ variable "namespace" {}
 variable "stage" {}
 
 variable "tags" {
+  type    = "map"
   default = {}
 }
 
