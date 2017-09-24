@@ -1,11 +1,11 @@
 # terraform-aws-s3-log-storage
 
-This module creates an S3 bucket suitable for receiving logs from other AWS services such as S3, CloudFront, and CloudTrails, which generate an enormous amount of log data. It implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (E.g. glacier) and ultimately expire the data altogether.
+This module creates an S3 bucket suitable for receiving logs from other `AWS` services such as `S3`, `CloudFront`, and `CloudTrails`, which generate an enormous amount of log data. It implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (_e.g._ `Glacier`) and ultimately expire the data altogether.
 
 
 ## Usage
 
-```terraform
+```hcl
 module "log_storage" {
   source                   = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=master"
   name                     = "${var.name}"
@@ -41,6 +41,7 @@ module "log_storage" {
 | `glacier_transition_days`           | `60`                | Number of days after which to move the data to the glacier storage tier                            | No       |
 | `expiration_days`                   | `90`                | Number of days after which to expunge the objects                                                  | No       |
 
+
 ## Outputs
 
 | Name                  | Description                           |
@@ -49,3 +50,8 @@ module "log_storage" {
 | `bucket_id`           | Bucket Name (aka ID)                  |
 | `bucket_arn`          | Bucket ARN                            |
 | `prefix`              | Prefix configured for lifecycle rules |
+
+
+## License
+
+Apache 2 License. See [`LICENSE`](LICENSE) for full details.
