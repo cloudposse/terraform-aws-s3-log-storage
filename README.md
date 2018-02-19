@@ -1,6 +1,8 @@
-# terraform-aws-s3-log-storage
+# terraform-aws-s3-log-storage [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-s3-log-storage.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-s3-log-storage)
 
-This module creates an S3 bucket suitable for receiving logs from other `AWS` services such as `S3`, `CloudFront`, and `CloudTrails`, which generate an enormous amount of log data. It implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (_e.g._ `Glacier`) and ultimately expire the data altogether.
+This module creates an S3 bucket suitable for receiving logs from other `AWS` services such as `S3`, `CloudFront`, and `CloudTrails`, which generate an enormous amount of log data.
+
+It implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (_e.g._ `Glacier`) and ultimately expire the data altogether.
 
 
 ## Usage
