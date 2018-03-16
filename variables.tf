@@ -1,21 +1,34 @@
-variable "name" {}
+variable "namespace" {
+  description = "Namespace (e.g. `cp` or `cloudposse`)"
+  type        = "string"
+}
 
-variable "namespace" {}
+variable "stage" {
+  description = "Stage (e.g. `prod`, `dev`, `staging`)"
+  type        = "string"
+}
 
-variable "stage" {}
-
-variable "tags" {
-  type    = "map"
-  default = {}
+variable "name" {
+  description = "Name  (e.g. `app` or `db`)"
+  type        = "string"
 }
 
 variable "delimiter" {
-  default = "-"
+  type        = "string"
+  default     = "-"
+  description = "Delimiter to be used between `name`, `namespace`, `stage`, etc."
 }
 
 variable "attributes" {
-  type    = "list"
-  default = []
+  type        = "list"
+  default     = []
+  description = "Additional attributes (e.g. `policy` or `role`)"
+}
+
+variable "tags" {
+  type        = "map"
+  default     = {}
+  description = "Additional tags (e.g. map('BusinessUnit`,`XYZ`)"
 }
 
 variable "acl" {
@@ -76,4 +89,14 @@ variable "glacier_transition_days" {
 variable "expiration_days" {
   description = "Number of days after which to expunge the objects"
   default     = "90"
+}
+
+variable "sse_algorithm" {
+  description = "The server-side encryption algorithm to use. Valid values are AES256 and aws:kms"
+  default     = "AES256"
+}
+
+variable "kms_master_key_id" {
+  description = "The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms"
+  default     = ""
 }
