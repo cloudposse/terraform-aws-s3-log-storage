@@ -102,6 +102,6 @@ variable "kms_master_key_id" {
 }
 
 variable "enabled" {
-  description = "Is module enabled"
+  description = "Set to `false` to prevent the module from creating any resources"
   default     = "true"
 }
