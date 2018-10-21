@@ -60,6 +60,7 @@ usage: |-
   ```hcl
   module "log_storage" {
     source                   = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=master"
+    enabled                  = "${var.enabled}"
     name                     = "${var.name}"
     stage                    = "${var.stage}"
     namespace                = "${var.namespace}"

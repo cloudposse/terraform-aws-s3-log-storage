@@ -6,6 +6,7 @@
 | acl | (Optional) The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services | string | `log-delivery-write` | no |
 | attributes | Additional attributes (e.g. `policy` or `role`) | list | `<list>` | no |
 | delimiter | Delimiter to be used between `name`, `namespace`, `stage`, etc. | string | `-` | no |
+| enabled | Is module enabled | string | `true` | no |
 | expiration_days | Number of days after which to expunge the objects | string | `90` | no |
 | force_destroy | (Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable. | string | `false` | no |
 | glacier_transition_days | Number of days after which to move the data to the glacier storage tier | string | `60` | no |
@@ -31,5 +32,6 @@
 | bucket_arn | Bucket ARN |
 | bucket_domain_name | FQDN of bucket |
 | bucket_id | Bucket Name (aka ID) |
+| enabled | Is module enabled |
 | prefix | Prefix configured for lifecycle rules |
 
