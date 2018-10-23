@@ -1,5 +1,6 @@
 module "default_label" {
   source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.3"
+  enabled    = "${var.enabled}"
   namespace  = "${var.namespace}"
   stage      = "${var.stage}"
   name       = "${var.name}"
@@ -9,6 +10,7 @@ module "default_label" {
 }
 
 resource "aws_s3_bucket" "default" {
+  count         = "${var.enabled == "true" ? 1 : 0}"
   bucket        = "${module.default_label.id}"
   acl           = "${var.acl}"
   region        = "${var.region}"
