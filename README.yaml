@@ -7,6 +7,25 @@
 # Name of this project
 name: terraform-aws-s3-log-storage
 
+# Tags of this project
+tags:
+  - aws
+  - terraform
+  - terraform-modules
+  - logging
+  - s3
+  - bucket
+  - logs
+  - storage
+  - glacier
+  - standard
+  - lifecycle-management
+  - versioning
+
+# Categories of this project
+categories:
+  - terraform-modules/logging
+
 # Logo for this project
 #logo: docs/logo.png
 
