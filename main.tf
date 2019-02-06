@@ -25,8 +25,8 @@ resource "aws_s3_bucket" "default" {
     id      = "${module.default_label.id}"
     enabled = "${var.lifecycle_rule_enabled}"
 
-    prefix = "${var.prefix}"
-    tags   = "${module.default_label.tags}"
+    prefix = "${var.lifecycle_prefix}"
+    tags   = "${var.lifecycle_tags}"
 
     noncurrent_version_expiration {
       days = "${var.noncurrent_version_expiration_days}"

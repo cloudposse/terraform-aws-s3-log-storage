@@ -14,7 +14,7 @@ output "bucket_arn" {
 }
 
 output "prefix" {
-  value       = "${var.prefix}"
+  value       = "${var.lifecycle_prefix}"
   description = "Prefix configured for lifecycle rules"
 }
 

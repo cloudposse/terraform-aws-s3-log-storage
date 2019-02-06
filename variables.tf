@@ -32,7 +32,7 @@ variable "tags" {
 }
 
 variable "acl" {
-  description = "(Optional) The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"
+  description = "The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"
   default     = "log-delivery-write"
 }
 
@@ -41,13 +41,18 @@ variable "policy" {
   default     = ""
 }
 
-variable "prefix" {
-  description = "(Optional) Key prefix. Used to manage object lifecycle events."
+variable "lifecycle_prefix" {
+  description = "Prefix filter. Used to manage object lifecycle events."
   default     = ""
 }
 
+variable "lifecycle_tags" {
+  description = "Tags filter. Used to manage object lifecycle events."
+  default     = {}
+}
+
 variable "region" {
-  description = "(Optional) If specified, the AWS region this bucket should reside in. Otherwise, the region used by the callee."
+  description = "If specified, the AWS region this bucket should reside in. Otherwise, the region used by the callee."
   default     = ""
 }
 
@@ -57,22 +62,22 @@ variable "force_destroy" {
 }
 
 variable "lifecycle_rule_enabled" {
-  description = "(Optional) enable lifecycle events on this bucket"
+  description = "Enable lifecycle events on this bucket"
   default     = "true"
 }
 
 variable "versioning_enabled" {
-  description = "(Optional) A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket."
+  description = "A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket."
   default     = "false"
 }
 
 variable "noncurrent_version_expiration_days" {
-  description = "(Optional) Specifies when noncurrent object versions expire."
+  description = "Specifies when noncurrent object versions expire."
   default     = "90"
 }
 
 variable "noncurrent_version_transition_days" {
-  description = "(Optional) Specifies when noncurrent object versions transitions"
+  description = "Specifies when noncurrent object versions transitions"
   default     = "30"
 }
 
