@@ -41,9 +41,14 @@ variable "policy" {
   default     = ""
 }
 
-variable "prefix" {
-  description = "(Optional) Key prefix. Used to manage object lifecycle events."
+variable "lifecycle_prefix" {
+  description = "(Optional) Prefix filter. Used to manage object lifecycle events."
   default     = ""
+}
+
+variable "lifecycle_tags" {
+  description = "(Optional) Tags filter. Used to manage object lifecycle events."
+  default     = {}
 }
 
 variable "region" {

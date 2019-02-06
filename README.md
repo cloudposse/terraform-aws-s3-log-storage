@@ -78,7 +78,6 @@ Available targets:
   lint                                Lint terraform code
 
 ```
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -91,13 +90,14 @@ Available targets:
 | force_destroy | (Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable. | string | `false` | no |
 | glacier_transition_days | Number of days after which to move the data to the glacier storage tier | string | `60` | no |
 | kms_master_key_id | The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms | string | `` | no |
+| lifecycle_prefix | (Optional) Prefix filter. Used to manage object lifecycle events. | string | `` | no |
 | lifecycle_rule_enabled | (Optional) enable lifecycle events on this bucket | string | `true` | no |
+| lifecycle_tags | (Optional) Tags filter. Used to manage object lifecycle events. | map | `<map>` | no |
 | name | Name  (e.g. `app` or `db`) | string | - | yes |
 | namespace | Namespace (e.g. `cp` or `cloudposse`) | string | - | yes |
 | noncurrent_version_expiration_days | (Optional) Specifies when noncurrent object versions expire. | string | `90` | no |
 | noncurrent_version_transition_days | (Optional) Specifies when noncurrent object versions transitions | string | `30` | no |
 | policy | A valid bucket policy JSON document. Note that if the policy document is not specific enough (but still valid), Terraform may view the policy as constantly changing in a terraform plan. In this case, please make sure you use the verbose/specific version of the policy. | string | `` | no |
-| prefix | (Optional) Key prefix. Used to manage object lifecycle events. | string | `` | no |
 | region | (Optional) If specified, the AWS region this bucket should reside in. Otherwise, the region used by the callee. | string | `` | no |
 | sse_algorithm | The server-side encryption algorithm to use. Valid values are AES256 and aws:kms | string | `AES256` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
@@ -199,7 +199,7 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 ## Copyright
 
-Copyright © 2017-2018 [Cloud Posse, LLC](https://cpco.io/copyright)
+Copyright © 2017-2019 [Cloud Posse, LLC](https://cpco.io/copyright)
 
 
 
