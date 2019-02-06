@@ -254,8 +254,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 ### Contributors
 
-|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Vladimir][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir][SweetOps_homepage] |
-|---|---|---|
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Vladimir][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir][SweetOps_homepage] | [![Gonzalo Peci][pecigonzalo_avatar]][pecigonzalo_homepage]<br/>[Gonzalo Peci][pecigonzalo_homepage] |
+|---|---|---|---|
 
   [osterman_homepage]: https://github.com/osterman
   [osterman_avatar]: https://github.com/osterman.png?size=150
@@ -263,6 +263,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [aknysh_avatar]: https://github.com/aknysh.png?size=150
   [SweetOps_homepage]: https://github.com/SweetOps
   [SweetOps_avatar]: https://github.com/SweetOps.png?size=150
+  [pecigonzalo_homepage]: https://github.com/pecigonzalo
+  [pecigonzalo_avatar]: https://github.com/pecigonzalo.png?size=150
 
 
 
