@@ -38,8 +38,8 @@ github_repo: cloudposse/terraform-aws-s3-log-storage
 # Badges to display
 badges:
   - name: "Codefresh Build Status"
-    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-iam-s3-user?type=cf-1"
-    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d12481cc6e335d586a1315d"
+    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-s3-log-storage?type=cf-1"
+    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d126bbbc1dc9fb42e4c7a21"
   - name: "Latest Release"
     image: "https://img.shields.io/github/release/cloudposse/terraform-aws-s3-log-storage.svg"
     url: "https://github.com/cloudposse/terraform-aws-s3-log-storage/releases/latest"

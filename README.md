@@ -3,7 +3,7 @@
 
 [![Cloud Posse][logo]](https://cpco.io/homepage)
 
-# terraform-aws-s3-log-storage [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-iam-s3-user?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d12481cc6e335d586a1315d) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-s3-log-storage.svg)](https://github.com/cloudposse/terraform-aws-s3-log-storage/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
+# terraform-aws-s3-log-storage [![Codefresh Build Status](https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-s3-log-storage?type=cf-1)](https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d126bbbc1dc9fb42e4c7a21) [![Latest Release](https://img.shields.io/github/release/cloudposse/terraform-aws-s3-log-storage.svg)](https://github.com/cloudposse/terraform-aws-s3-log-storage/releases/latest) [![Slack Community](https://slack.cloudposse.com/badge.svg)](https://slack.cloudposse.com)
 
 
 This module creates an S3 bucket suitable for receiving logs from other `AWS` services such as `S3`, `CloudFront`, and `CloudTrails`.
