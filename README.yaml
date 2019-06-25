@@ -37,9 +37,9 @@ github_repo: cloudposse/terraform-aws-s3-log-storage
 
 # Badges to display
 badges:
-  - name: "Build Status"
-    image: "https://travis-ci.org/cloudposse/terraform-aws-s3-log-storage.svg?branch=master"
-    url: "https://travis-ci.org/cloudposse/terraform-aws-s3-log-storage"
+  - name: "Codefresh Build Status"
+    image: "https://g.codefresh.io/api/badges/pipeline/cloudposse/terraform-modules%2Fterraform-aws-s3-log-storage?type=cf-1"
+    url: "https://g.codefresh.io/public/accounts/cloudposse/pipelines/5d126bbbc1dc9fb42e4c7a21"
   - name: "Latest Release"
     image: "https://img.shields.io/github/release/cloudposse/terraform-aws-s3-log-storage.svg"
     url: "https://github.com/cloudposse/terraform-aws-s3-log-storage/releases/latest"
@@ -79,15 +79,13 @@ usage: |-
   ```hcl
   module "log_storage" {
     source                   = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=master"
-    enabled                  = "${var.enabled}"
-    name                     = "${var.name}"
-    stage                    = "${var.stage}"
-    namespace                = "${var.namespace}"
-    acl                      = "${var.acl}"
-    prefix                   = "${var.prefix}"
-    standard_transition_days = "${var.standard_transition_days}"
-    glacier_transition_days  = "${var.glacier_transition_days}"
-    expiration_days          = "${var.expiration_days}"
+    name                     = "logs"
+    stage                    = "test"
+    namespace                = "eg"
+    acl                      = "log-delivery-write"
+    standard_transition_days = 30
+    glacier_transition_days  = 60
+    expiration_days          = 90
   }
   ```
 
