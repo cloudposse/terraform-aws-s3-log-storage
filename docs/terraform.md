@@ -9,7 +9,7 @@
 | expiration_days | Number of days after which to expunge the objects | string | `90` | no |
 | force_destroy | (Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable | bool | `false` | no |
 | glacier_transition_days | Number of days after which to move the data to the glacier storage tier | string | `60` | no |
-| kms_master_key_id | The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms | string | `` | no |
+| kms_master_key_arn | The AWS KMS master key ARN used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms | string | `` | no |
 | lifecycle_prefix | Prefix filter. Used to manage object lifecycle events | string | `` | no |
 | lifecycle_rule_enabled | Enable lifecycle events on this bucket | bool | `true` | no |
 | lifecycle_tags | Tags filter. Used to manage object lifecycle events | map(string) | `<map>` | no |
