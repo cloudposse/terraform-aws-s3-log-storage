@@ -10,7 +10,7 @@ module "default_label" {
 }
 
 resource "null_resource" "default" {
-  count = "${var.enabled == "true" && count(var.log_bucket) > 0 ? 1 : 0}"
+  count = "${var.enabled == "true" && length(var.log_bucket) > 0 ? 1 : 0}"
 
   triggers = {
     target_bucket = "${var.log_bucket}"
