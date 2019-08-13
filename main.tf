@@ -23,7 +23,7 @@ resource "null_resource" "default" {
 }
 
 locals {
-  logging = "${null_resource.default.*.triggers}"
+  logging = ["${null_resource.default.*.triggers}"]
 }
 
 resource "aws_s3_bucket" "default" {
