@@ -98,6 +98,8 @@ Available targets:
 | lifecycle_prefix | Prefix filter. Used to manage object lifecycle events. | string | `` | no |
 | lifecycle_rule_enabled | Enable lifecycle events on this bucket | string | `true` | no |
 | lifecycle_tags | Tags filter. Used to manage object lifecycle events. | map | `<map>` | no |
+| log_bucket | he name of the bucket that will receive the log objects | string | `` | no |
+| log_bucket_prefix | To specify a key prefix for log objects | string | `` | no |
 | name | Name  (e.g. `app` or `db`) | string | - | yes |
 | namespace | Namespace (e.g. `cp` or `cloudposse`) | string | - | yes |
 | noncurrent_version_expiration_days | Specifies when noncurrent object versions expire. | string | `90` | no |
