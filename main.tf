@@ -9,6 +9,19 @@ module "default_label" {
   tags       = "${var.tags}"
 }
 
+resource "null_resource" "default" {
+  count = "${var.enabled == "true" && count(var.log_bucket) > 0 ? 1 : 0}"
+
+  triggers = {
+    target_bucket = "${var.log_bucket}"
+    target_prefix = "${var.log_bucket_prefix}"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 resource "aws_s3_bucket" "default" {
   count         = "${var.enabled == "true" ? 1 : 0}"
   bucket        = "${module.default_label.id}"
@@ -63,10 +76,7 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
-  logging {
-    target_bucket = "${var.log_bucket}"
-    target_prefix = "${var.log_bucket_prefix}"
-  }
+  logging = ["${null_resource.default.*.triggers}"]
 
   tags = "${module.default_label.tags}"
 }
