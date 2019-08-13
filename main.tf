@@ -22,6 +22,10 @@ resource "null_resource" "default" {
   }
 }
 
+locals {
+  logging = ["${list(null_resource.default.*.triggers)}"]
+}
+
 resource "aws_s3_bucket" "default" {
   count         = "${var.enabled == "true" ? 1 : 0}"
   bucket        = "${module.default_label.id}"
@@ -76,7 +80,7 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
-  logging = "${compact(list(null_resource.default.*.triggers))}"
+  logging = ["${compact(local.logging)}"]
 
   tags = "${module.default_label.tags}"
 }
