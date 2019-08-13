@@ -76,7 +76,7 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
-  logging = "${compact(list())}"
+  logging = "${compact(list(null_resource.default.*.triggers))}"
 
   tags = "${module.default_label.tags}"
 }
