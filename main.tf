@@ -80,7 +80,7 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
-  logging = ["${compact(flatten(local.logging))}"]
+  #logging = ["${compact(flatten(local.logging))}"]
 
   tags = "${module.default_label.tags}"
 }

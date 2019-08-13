@@ -22,3 +22,7 @@ output "enabled" {
   value       = "${var.enabled}"
   description = "Is module enabled"
 }
+
+output "logging" {
+  value       = "${local.logging}"
+}
