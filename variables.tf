@@ -41,6 +41,16 @@ variable "policy" {
   default     = ""
 }
 
+variable "log_bucket" {
+  description = "he name of the bucket that will receive the log objects"
+  default     = ""
+}
+
+variable "log_bucket_prefix" {
+  description = "To specify a key prefix for log objects"
+  default     = ""
+}
+
 variable "lifecycle_prefix" {
   description = "Prefix filter. Used to manage object lifecycle events."
   default     = ""

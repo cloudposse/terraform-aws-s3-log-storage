@@ -63,5 +63,10 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
+  logging {
+    target_bucket = "${var.log_bucket}"
+    target_prefix = "${var.log_bucket_prefix}"
+  }
+
   tags = "${module.default_label.tags}"
 }
