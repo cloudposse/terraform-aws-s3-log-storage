@@ -12,7 +12,7 @@ module "default_label" {
 resource "null_resource" "default" {
   count = "${var.enabled == "true" && length(var.log_bucket) > 0 ? 1 : 0}"
 
-  triggers = {
+  triggers {
     target_bucket = "${var.log_bucket}"
     target_prefix = "${var.log_bucket_prefix}"
   }
@@ -76,7 +76,7 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
-  logging = "${list(null_resource.default.*.triggers.target_bucket)}"
+  logging = "${list(null_resource.default.*.triggers)}"
 
   tags = "${module.default_label.tags}"
 }
