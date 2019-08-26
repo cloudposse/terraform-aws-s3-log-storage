@@ -33,6 +33,12 @@ variable "tags" {
   description = "Additional tags (e.g. map('BusinessUnit`,`XYZ`)"
 }
 
+variable "cloud_posse_tags" {
+  type        = bool
+  default     = true
+  description = "Specifies whether tags should be enahnced with Cloud Posse defaults"
+}
+
 variable "acl" {
   type        = string
   description = "The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"

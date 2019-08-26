@@ -63,5 +63,5 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
-  tags = module.default_label.tags
+  tags = var.cloud_posse_tags ? module.default_label.tags : var.tags
 }
