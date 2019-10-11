@@ -11,7 +11,7 @@ module "default_label" {
 
 resource "aws_s3_bucket" "default" {
   count         = var.enabled ? 1 : 0
-  bucket        = module.default_label.id
+  bucket        = substr(module.default_label.id, 0, 63)
   acl           = var.acl
   region        = var.region
   force_destroy = var.force_destroy
