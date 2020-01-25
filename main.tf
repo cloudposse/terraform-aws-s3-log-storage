@@ -33,9 +33,13 @@ resource "aws_s3_bucket" "default" {
       days = var.noncurrent_version_expiration_days
     }
 
-    noncurrent_version_transition {
-      days          = var.noncurrent_version_transition_days
-      storage_class = "GLACIER"
+    dynamic "noncurrent_version_transition" {
+      for_each = var.enable_glacier_transition ? [1] : []
+
+      content {
+        days          = var.noncurrent_version_transition_days
+        storage_class = "GLACIER"
+      }
     }
 
     transition {
@@ -43,9 +47,13 @@ resource "aws_s3_bucket" "default" {
       storage_class = "STANDARD_IA"
     }
 
-    transition {
-      days          = var.glacier_transition_days
-      storage_class = "GLACIER"
+    dynamic "transition" {
+      for_each = var.enable_glacier_transition ? [1] : []
+
+      content {
+        days          = var.glacier_transition_days
+        storage_class = "GLACIER"
+      }
     }
 
     expiration {

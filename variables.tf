@@ -111,6 +111,12 @@ variable "glacier_transition_days" {
   description = "Number of days after which to move the data to the glacier storage tier"
 }
 
+variable "enable_glacier_transition" {
+  type        = bool
+  default     = true
+  description = "Enables the transition to AWS Glacier which can cause unnecessary costs for huge amount of small files"
+}
+
 variable "expiration_days" {
   type        = number
   default     = 90
