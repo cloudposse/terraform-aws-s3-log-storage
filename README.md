@@ -127,6 +127,7 @@ Available targets:
 | acl | The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services | string | `log-delivery-write` | no |
 | attributes | Additional attributes (e.g. `policy` or `role`) | list(string) | `<list>` | no |
 | delimiter | Delimiter to be used between `name`, `namespace`, `stage`, etc. | string | `-` | no |
+| enable_glacier_transition | Enables the transition to AWS Glacier which can cause unnecessary costs for huge amount of small files | bool | `true` | no |
 | enabled | Set to `false` to prevent the module from creating any resources | bool | `true` | no |
 | environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | string | `` | no |
 | expiration_days | Number of days after which to expunge the objects | number | `90` | no |
@@ -247,7 +248,7 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 ## Copyright
 
-Copyright © 2017-2019 [Cloud Posse, LLC](https://cpco.io/copyright)
+Copyright © 2017-2020 [Cloud Posse, LLC](https://cpco.io/copyright)
 
 
 
