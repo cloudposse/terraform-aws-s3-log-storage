@@ -74,6 +74,10 @@ description: |-
 
   https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html
 
+  It blocks public access to the bucket by default.
+
+  https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-block-public-access.html
+
 # How to use this project
 usage: |-
   ```hcl
