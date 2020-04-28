@@ -105,6 +105,12 @@ variable "standard_transition_days" {
   description = "Number of days to persist in the standard storage tier before moving to the infrequent access tier"
 }
 
+variable "enable_standard_transition" {
+  type        = bool
+  default     = true
+  description = "Enables the transition to AWS STANDARD IA"
+}
+
 variable "glacier_transition_days" {
   type        = number
   default     = 60
