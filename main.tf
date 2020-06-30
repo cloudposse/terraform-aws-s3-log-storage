@@ -80,6 +80,7 @@ resource "aws_s3_bucket" "default" {
 # https://www.terraform.io/docs/providers/aws/r/s3_bucket_public_access_block.html
 # for the nuances of the blocking options
 resource "aws_s3_bucket_public_access_block" "default" {
+  count  = var.enabled ? 1 : 0
   bucket = join("", aws_s3_bucket.default.*.id)
 
   block_public_acls       = var.block_public_acls
