@@ -1,5 +1,5 @@
 module "default_label" {
-  source      = "git::https://github.com/brokorus/terraform-null-label.git?ref=tags/master"
+  source      = "git::https://github.com/brokorus/terraform-null-label.git?ref=master"
   enabled     = var.enabled
   namespace   = var.namespace
   environment = var.environment
