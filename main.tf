@@ -1,18 +1,6 @@
-module "default_label" {
-  source      = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.2"
-  enabled     = var.enabled
-  namespace   = var.namespace
-  environment = var.environment
-  stage       = var.stage
-  name        = var.name
-  delimiter   = var.delimiter
-  attributes  = var.attributes
-  tags        = var.tags
-}
-
 resource "aws_s3_bucket" "default" {
   count         = var.enabled ? 1 : 0
-  bucket        = module.default_label.id
+  bucket        = module.this.id
   acl           = var.acl
   region        = var.region
   force_destroy = var.force_destroy
@@ -23,7 +11,7 @@ resource "aws_s3_bucket" "default" {
   }
 
   lifecycle_rule {
-    id                                     = module.default_label.id
+    id                                     = module.this.id
     enabled                                = var.lifecycle_rule_enabled
     prefix                                 = var.lifecycle_prefix
     tags                                   = var.lifecycle_tags
@@ -66,7 +54,7 @@ resource "aws_s3_bucket" "default" {
     for_each = var.access_log_bucket_name != "" ? [1] : []
     content {
       target_bucket = var.access_log_bucket_name
-      target_prefix = "logs/${module.default_label.id}/"
+      target_prefix = "logs/${module.this.id}/"
     }
   }
 
@@ -81,7 +69,7 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
-  tags = module.default_label.tags
+  tags = module.this.tags
 }
 
 # Refer to the terraform documentation on s3_bucket_public_access_block at
