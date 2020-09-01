@@ -1,44 +1,3 @@
-variable "namespace" {
-  type        = string
-  default     = ""
-  description = "Namespace (e.g. `cp` or `cloudposse`)"
-}
-
-variable "stage" {
-  type        = string
-  default     = ""
-  description = "Stage (e.g. `prod`, `dev`, `staging`)"
-}
-
-variable "environment" {
-  type        = string
-  default     = ""
-  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
-}
-
-variable "name" {
-  type        = string
-  description = "Name  (e.g. `app` or `db`)"
-}
-
-variable "delimiter" {
-  type        = string
-  default     = "-"
-  description = "Delimiter to be used between `name`, `namespace`, `stage`, etc."
-}
-
-variable "attributes" {
-  type        = list(string)
-  default     = []
-  description = "Additional attributes (e.g. `policy` or `role`)"
-}
-
-variable "tags" {
-  type        = map(string)
-  default     = {}
-  description = "Additional tags (e.g. map('BusinessUnit`,`XYZ`)"
-}
-
 variable "acl" {
   type        = string
   description = "The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"
@@ -61,12 +20,6 @@ variable "lifecycle_tags" {
   type        = map(string)
   description = "Tags filter. Used to manage object lifecycle events"
   default     = {}
-}
-
-variable "region" {
-  type        = string
-  description = "If specified, the AWS region this bucket should reside in. Otherwise, the region used by the callee"
-  default     = ""
 }
 
 variable "force_destroy" {
@@ -139,12 +92,6 @@ variable "kms_master_key_arn" {
   type        = string
   default     = ""
   description = "The AWS KMS master key ARN used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms"
-}
-
-variable "enabled" {
-  type        = bool
-  default     = true
-  description = "Set to `false` to prevent the module from creating any resources"
 }
 
 variable "block_public_acls" {
