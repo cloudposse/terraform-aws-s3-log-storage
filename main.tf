@@ -2,7 +2,6 @@ resource "aws_s3_bucket" "default" {
   count         = var.enabled ? 1 : 0
   bucket        = module.this.id
   acl           = var.acl
-  region        = var.region
   force_destroy = var.force_destroy
   policy        = var.policy
 
