@@ -3,7 +3,8 @@ provider "aws" {
 }
 
 module "s3_log_storage" {
-  source = "../../"
+  source  = "../../"
+  enabled = var.enabled
 
   namespace     = var.namespace
   stage         = var.stage
