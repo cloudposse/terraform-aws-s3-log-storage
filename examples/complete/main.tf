@@ -3,11 +3,9 @@ provider "aws" {
 }
 
 module "s3_log_storage" {
-  source  = "../../"
-  enabled = var.enabled
+  source = "../../"
 
-  namespace     = var.namespace
-  stage         = var.stage
-  name          = var.name
   force_destroy = true
+  
+  context = module.this.context
 }
