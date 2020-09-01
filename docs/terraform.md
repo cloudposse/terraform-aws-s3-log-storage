@@ -1,9 +1,10 @@
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | terraform | >= 0.12.0, < 0.14.0 |
-| aws | ~> 2.0 |
+| aws | >= 2.34, < 4.0 |
 | local | ~> 1.2 |
 | null | ~> 2.0 |
 
@@ -11,7 +12,7 @@
 
 | Name | Version |
 |------|---------|
-| aws | ~> 2.0 |
+| aws | >= 2.34, < 4.0 |
 
 ## Inputs
 
@@ -40,7 +41,6 @@
 | noncurrent\_version\_expiration\_days | Specifies when noncurrent object versions expire | `number` | `90` | no |
 | noncurrent\_version\_transition\_days | Specifies when noncurrent object versions transitions | `number` | `30` | no |
 | policy | A valid bucket policy JSON document. Note that if the policy document is not specific enough (but still valid), Terraform may view the policy as constantly changing in a terraform plan. In this case, please make sure you use the verbose/specific version of the policy | `string` | `""` | no |
-| region | If specified, the AWS region this bucket should reside in. Otherwise, the region used by the callee | `string` | `""` | no |
 | restrict\_public\_buckets | Set to `false` to disable the restricting of making the bucket public | `bool` | `true` | no |
 | sse\_algorithm | The server-side encryption algorithm to use. Valid values are AES256 and aws:kms | `string` | `"AES256"` | no |
 | stage | Stage (e.g. `prod`, `dev`, `staging`) | `string` | `""` | no |
@@ -58,3 +58,4 @@
 | enabled | Is module enabled |
 | prefix | Prefix configured for lifecycle rules |
 
+<!-- markdownlint-restore -->
