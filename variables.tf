@@ -63,12 +63,6 @@ variable "lifecycle_tags" {
   default     = {}
 }
 
-variable "region" {
-  type        = string
-  description = "If specified, the AWS region this bucket should reside in. Otherwise, the region used by the callee"
-  default     = ""
-}
-
 variable "force_destroy" {
   type        = bool
   description = "(Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable"
