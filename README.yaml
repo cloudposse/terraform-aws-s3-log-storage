@@ -57,7 +57,9 @@ description: |-
 usage: |-
   ```hcl
   module "log_storage" {
-    source                   = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=master"
+    source = "cloudposse/s3-log-storage/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
     name                     = "logs"
     stage                    = "test"
     namespace                = "eg"

@@ -87,7 +87,9 @@ The table below correctly indicates which inputs are required.
 
 ```hcl
 module "log_storage" {
-  source                   = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=master"
+  source = "cloudposse/s3-log-storage/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version = "x.x.x"
   name                     = "logs"
   stage                    = "test"
   namespace                = "eg"
@@ -120,7 +122,7 @@ Available targets:
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.0 |
+| terraform | >= 0.12.26 |
 | aws | >= 2.0 |
 | local | >= 1.2 |
 | null | >= 2.0 |
