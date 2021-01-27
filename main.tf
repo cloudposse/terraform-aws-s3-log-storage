@@ -1,4 +1,5 @@
 resource "aws_s3_bucket" "default" {
+  #bridgecrew:skip=BC_AWS_S3_13:Skipping `Enable S3 Bucket Logging` check until bridgecrew will support dynamic blocks (https://github.com/bridgecrewio/checkov/issues/776).
   count         = module.this.enabled ? 1 : 0
   bucket        = module.this.id
   acl           = var.acl
@@ -6,7 +7,8 @@ resource "aws_s3_bucket" "default" {
   policy        = var.policy
 
   versioning {
-    enabled = var.versioning_enabled
+    enabled    = var.versioning_enabled
+    mfa_delete = var.mfa_delete
   }
 
   lifecycle_rule {

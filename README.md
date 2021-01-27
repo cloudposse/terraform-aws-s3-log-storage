@@ -124,8 +124,6 @@ Available targets:
 |------|---------|
 | terraform | >= 0.12.26 |
 | aws | >= 2.0 |
-| local | >= 1.2 |
-| null | >= 2.0 |
 
 ## Providers
 
@@ -159,6 +157,7 @@ Available targets:
 | lifecycle\_prefix | Prefix filter. Used to manage object lifecycle events | `string` | `""` | no |
 | lifecycle\_rule\_enabled | Enable lifecycle events on this bucket | `bool` | `true` | no |
 | lifecycle\_tags | Tags filter. Used to manage object lifecycle events | `map(string)` | `{}` | no |
+| mfa\_delete | A boolean that indicates that versions of S3 objects can only be deleted with MFA. ( Terraform cannot apply changes of this value; https://github.com/terraform-providers/terraform-provider-aws/issues/629 ) | `bool` | `true` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
 | noncurrent\_version\_expiration\_days | Specifies when noncurrent object versions expire | `number` | `90` | no |
@@ -170,7 +169,7 @@ Available targets:
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | standard\_transition\_days | Number of days to persist in the standard storage tier before moving to the infrequent access tier | `number` | `30` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
-| versioning\_enabled | A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket | `bool` | `false` | no |
+| versioning\_enabled | A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket | `bool` | `true` | no |
 
 ## Outputs
 

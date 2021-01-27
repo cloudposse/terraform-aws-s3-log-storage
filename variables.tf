@@ -37,7 +37,7 @@ variable "lifecycle_rule_enabled" {
 variable "versioning_enabled" {
   type        = bool
   description = "A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket"
-  default     = false
+  default     = true
 }
 
 variable "noncurrent_version_expiration_days" {
@@ -122,4 +122,10 @@ variable "access_log_bucket_name" {
   type        = string
   default     = ""
   description = "Name of the S3 bucket where s3 access log will be sent to"
+}
+
+variable "mfa_delete" {
+  type        = bool
+  description = "A boolean that indicates that versions of S3 objects can only be deleted with MFA. ( Terraform cannot apply changes of this value; https://github.com/terraform-providers/terraform-provider-aws/issues/629 )"
+  default     = true
 }
