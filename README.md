@@ -157,7 +157,6 @@ Available targets:
 | lifecycle\_prefix | Prefix filter. Used to manage object lifecycle events | `string` | `""` | no |
 | lifecycle\_rule\_enabled | Enable lifecycle events on this bucket | `bool` | `true` | no |
 | lifecycle\_tags | Tags filter. Used to manage object lifecycle events | `map(string)` | `{}` | no |
-| mfa\_delete | A boolean that indicates that versions of S3 objects can only be deleted with MFA. ( Terraform cannot apply changes of this value; https://github.com/terraform-providers/terraform-provider-aws/issues/629 ) | `bool` | `true` | no |
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | `null` | no |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `null` | no |
 | noncurrent\_version\_expiration\_days | Specifies when noncurrent object versions expire | `number` | `90` | no |
