@@ -37,7 +37,7 @@ variable "lifecycle_rule_enabled" {
 variable "versioning_enabled" {
   type        = bool
   description = "A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket"
-  default     = false
+  default     = true
 }
 
 variable "noncurrent_version_expiration_days" {

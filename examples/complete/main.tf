@@ -3,8 +3,7 @@ provider "aws" {
 }
 
 module "s3_log_storage" {
-  source = "../../"
-
+  source        = "../../"
   force_destroy = true
 
   context = module.this.context
