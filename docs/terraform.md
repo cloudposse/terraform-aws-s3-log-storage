@@ -12,6 +12,19 @@
 |------|---------|
 | aws | >= 2.0 |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| this | cloudposse/label/null | 0.24.1 |
+
+## Resources
+
+| Name |
+|------|
+| [aws_s3_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) |
+| [aws_s3_bucket_public_access_block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -52,6 +65,7 @@
 | standard\_transition\_days | Number of days to persist in the standard storage tier before moving to the infrequent access tier | `number` | `30` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 | versioning\_enabled | A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket | `bool` | `true` | no |
+| versioning\_mfa\_delete\_enabled | Enable MFA delete for the bucket | `string` | `false` | no |
 
 ## Outputs
 
@@ -62,5 +76,4 @@
 | bucket\_id | Bucket Name (aka ID) |
 | enabled | Is module enabled |
 | prefix | Prefix configured for lifecycle rules |
-
 <!-- markdownlint-restore -->
