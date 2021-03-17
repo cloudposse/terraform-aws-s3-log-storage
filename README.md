@@ -190,6 +190,7 @@ Available targets:
 | standard\_transition\_days | Number of days to persist in the standard storage tier before moving to the infrequent access tier | `number` | `30` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 | versioning\_enabled | A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket | `bool` | `true` | no |
+| versioning\_mfa\_delete\_enabled | Enable MFA to be requiced to delete the bucket. Security best practices for CloudTrail logs that are stored in S3 recommend MFA Delete be enabled. | `bool` | `true` | no |
 
 ## Outputs
 

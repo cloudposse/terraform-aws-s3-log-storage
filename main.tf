@@ -8,7 +8,8 @@ resource "aws_s3_bucket" "default" {
   policy        = var.policy
 
   versioning {
-    enabled = var.versioning_enabled
+    enabled    = var.versioning_enabled
+    mfa_delete = var.versioning_mfa_delete_enabled
   }
 
   lifecycle_rule {
