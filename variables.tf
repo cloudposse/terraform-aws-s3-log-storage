@@ -123,3 +123,9 @@ variable "access_log_bucket_name" {
   default     = ""
   description = "Name of the S3 bucket where s3 access log will be sent to"
 }
+
+variable "versioning_mfa_delete_enabled" {
+  type        = string
+  default     = false
+  description = "Enable MFA delete for the bucket"
+}
