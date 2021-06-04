@@ -59,6 +59,31 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
+  dynamic "statement" {
+    for_each = var.allow_ssl_requests_only ? [1] : []
+
+    content {
+      sid     = "ForceSSLOnlyAccess"
+      effect  = "Deny"
+      actions = ["s3:*"]
+      resources = [
+        "arn:${data.aws_partition.current.partition}:s3:::${join("", aws_s3_bucket.default.*.id)}",
+        "arn:${data.aws_partition.current.partition}:s3:::${join("", aws_s3_bucket.default.*.id)}/*"
+      ]
+
+      principals {
+        identifiers = ["*"]
+        type        = "*"
+      }
+
+      condition {
+        test     = "Bool"
+        values   = ["false"]
+        variable = "aws:SecureTransport"
+      }
+    }
+  }
+
   # https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html
   # https://www.terraform.io/docs/providers/aws/r/s3_bucket.html#enable-default-server-side-encryption
   server_side_encryption_configuration {
