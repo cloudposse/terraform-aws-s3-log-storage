@@ -124,6 +124,12 @@ variable "access_log_bucket_name" {
   description = "Name of the S3 bucket where s3 access log will be sent to"
 }
 
+variable "allow_encrypted_uploads_only" {
+  type        = bool
+  default     = false
+  description = "Set to `true` to prevent uploads of unencrypted objects to S3 bucket"
+}
+
 variable "allow_ssl_requests_only" {
   type        = bool
   default     = false
