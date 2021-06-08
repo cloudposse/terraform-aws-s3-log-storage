@@ -134,4 +134,8 @@ variable "allow_ssl_requests_only" {
   type        = bool
   default     = false
   description = "Set to `true` to require requests to use Secure Socket Layer (HTTPS/SSL). This will explicitly deny access to HTTP requests"
+variable "versioning_mfa_delete_enabled" {
+  type        = string
+  default     = false
+  description = "Enable MFA delete for the bucket"
 }

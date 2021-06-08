@@ -8,47 +8,52 @@ resource "aws_s3_bucket" "default" {
   policy        = var.policy
 
   versioning {
-    enabled = var.versioning_enabled
+    enabled    = var.versioning_enabled
+    mfa_delete = var.versioning_mfa_delete_enabled
   }
 
-  lifecycle_rule {
-    id                                     = module.this.id
-    enabled                                = var.lifecycle_rule_enabled
-    prefix                                 = var.lifecycle_prefix
-    tags                                   = var.lifecycle_tags
-    abort_incomplete_multipart_upload_days = var.abort_incomplete_multipart_upload_days
+  // MFA Enabled is not compatable with lifecycle management - https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-and-other-bucket-config.html
+  dynamic "lifecycle_rule" {
+    for_each = var.versioning_mfa_delete_enabled ? [] : [1]
+    content {
+      id                                     = module.this.id
+      enabled                                = var.lifecycle_rule_enabled
+      prefix                                 = var.lifecycle_prefix
+      tags                                   = var.lifecycle_tags
+      abort_incomplete_multipart_upload_days = var.abort_incomplete_multipart_upload_days
 
-    noncurrent_version_expiration {
-      days = var.noncurrent_version_expiration_days
-    }
-
-    dynamic "noncurrent_version_transition" {
-      for_each = var.enable_glacier_transition ? [1] : []
-
-      content {
-        days          = var.noncurrent_version_transition_days
-        storage_class = "GLACIER"
+      noncurrent_version_expiration {
+        days = var.noncurrent_version_expiration_days
       }
-    }
 
-    transition {
-      days          = var.standard_transition_days
-      storage_class = "STANDARD_IA"
-    }
+      dynamic "noncurrent_version_transition" {
+        for_each = var.enable_glacier_transition ? [1] : []
 
-    dynamic "transition" {
-      for_each = var.enable_glacier_transition ? [1] : []
-
-      content {
-        days          = var.glacier_transition_days
-        storage_class = "GLACIER"
+        content {
+          days          = var.noncurrent_version_transition_days
+          storage_class = "GLACIER"
+        }
       }
-    }
 
-    expiration {
-      days = var.expiration_days
-    }
+      transition {
+        days          = var.standard_transition_days
+        storage_class = "STANDARD_IA"
+      }
 
+      dynamic "transition" {
+        for_each = var.enable_glacier_transition ? [1] : []
+
+        content {
+          days          = var.glacier_transition_days
+          storage_class = "GLACIER"
+        }
+      }
+
+      expiration {
+        days = var.expiration_days
+      }
+
+    }
   }
 
   dynamic "logging" {
