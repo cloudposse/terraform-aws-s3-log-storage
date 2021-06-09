@@ -151,6 +151,8 @@ data "aws_iam_policy_document" "bucket_policy" {
   }
 }
 
+data "aws_partition" "current" {}
+
 data "aws_iam_policy_document" "aggregated_policy" {
   count         = module.this.enabled ? 1 : 0
   source_json   = var.policy
