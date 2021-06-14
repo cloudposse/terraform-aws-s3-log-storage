@@ -60,7 +60,7 @@ resource "aws_s3_bucket" "default" {
     for_each = var.access_log_bucket_name != "" ? [1] : []
     content {
       target_bucket = var.access_log_bucket_name
-      target_prefix = "logs/${module.this.id}/"
+      target_prefix = "${var.access_log_bucket_prefix}${module.this.id}/"
     }
   }
 
