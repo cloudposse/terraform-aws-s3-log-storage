@@ -18,6 +18,11 @@ output "prefix" {
   description = "Prefix configured for lifecycle rules"
 }
 
+output "bucket_notifications_sqs_queue_arn" {
+  value       = join("", aws_sqs_queue.notifications.*.arn)
+  description = "Notifications SQS queue ARN"
+}
+
 output "enabled" {
   value       = module.this.enabled
   description = "Is module enabled"
