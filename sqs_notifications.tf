@@ -1,17 +1,17 @@
 locals {
   sqs_notifications_enabled = module.this.enabled && var.bucket_notifications_enabled && (var.bucket_notifications_type == "SQS")
-  sqs_queue_name = module.this.id
+  sqs_queue_name            = module.this.id
 }
 
 resource "aws_sqs_queue" "notifications" {
-  count         = local.sqs_notifications_enabled ? 1 : 0
+  count  = local.sqs_notifications_enabled ? 1 : 0
   name   = local.sqs_queue_name
   policy = join("", data.aws_iam_policy_document.sqs.*.json)
   tags   = module.this.tags
 }
 
 data "aws_iam_policy_document" "sqs" {
-  count         = local.sqs_notifications_enabled ? 1 : 0
+  count = local.sqs_notifications_enabled ? 1 : 0
 
   statement {
     effect = "Allow"
@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "sqs" {
 }
 
 resource "aws_s3_bucket_notification" "bucket_notification" {
-  count         = local.sqs_notifications_enabled ? 1 : 0
+  count  = local.sqs_notifications_enabled ? 1 : 0
   bucket = join("", aws_s3_bucket.default.*.id)
 
   queue {
