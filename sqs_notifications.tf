@@ -1,5 +1,5 @@
 locals {
-  sqs_notifications_enabled = module.this.enabled && var.bucket_notifications_enabled && (var.bucket_notifications_type == "SQS")
+  sqs_notifications_enabled = module.this.enabled && var.bucket_notifications_enabled && var.bucket_notifications_type == "SQS"
   sqs_queue_name            = module.this.id
 }
 
@@ -7,6 +7,7 @@ resource "aws_sqs_queue" "notifications" {
   count  = local.sqs_notifications_enabled ? 1 : 0
   name   = local.sqs_queue_name
   policy = join("", data.aws_iam_policy_document.sqs.*.json)
+  kms_master_key_id = "alias/aws/sqs"
   tags   = module.this.tags
 }
 
