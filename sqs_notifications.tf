@@ -4,11 +4,11 @@ locals {
 }
 
 resource "aws_sqs_queue" "notifications" {
-  count  = local.sqs_notifications_enabled ? 1 : 0
-  name   = local.sqs_queue_name
-  policy = join("", data.aws_iam_policy_document.sqs.*.json)
+  count             = local.sqs_notifications_enabled ? 1 : 0
+  name              = local.sqs_queue_name
+  policy            = join("", data.aws_iam_policy_document.sqs.*.json)
   kms_master_key_id = "alias/aws/sqs"
-  tags   = module.this.tags
+  tags              = module.this.tags
 }
 
 data "aws_iam_policy_document" "sqs" {
