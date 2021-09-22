@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "sqs" {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
     }
-    resources = aws_sqs_queue.notifications.*.arn
+    resources = ["arn:aws:sqs:*:*:${local.sqs_queue_name}"]
     actions = [
       "sqs:SendMessage"
     ]
