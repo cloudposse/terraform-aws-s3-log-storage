@@ -3,21 +3,24 @@ locals {
   sqs_queue_name            = module.this.id
 }
 
+data "aws_caller_identity" "current" {}
+
 resource "aws_sqs_queue" "notifications" {
+  #bridgecrew:skip=BC_AWS_GENERAL_16:Skipping `AWS SQS server side encryption is not enabled` check because this queue does not have sensitive data. Enabling the encryption for S3 publisher requires the new CMK which is extra here.
   count             = local.sqs_notifications_enabled ? 1 : 0
   name              = local.sqs_queue_name
-  policy            = join("", data.aws_iam_policy_document.sqs.*.json)
-  kms_master_key_id = "alias/aws/sqs"
+  policy            = join("", data.aws_iam_policy_document.sqs_policy.*.json)
   tags              = module.this.tags
 }
 
-data "aws_iam_policy_document" "sqs" {
+# https://docs.aws.amazon.com/AmazonS3/latest/userguide/grant-destinations-permissions-to-s3.html
+data "aws_iam_policy_document" "sqs_policy" {
   count = local.sqs_notifications_enabled ? 1 : 0
 
   statement {
     effect = "Allow"
     principals {
-      type        = "Service"
+      type = "Service"
       identifiers = ["s3.amazonaws.com"]
     }
     resources = ["arn:aws:sqs:*:*:${local.sqs_queue_name}"]
@@ -25,9 +28,15 @@ data "aws_iam_policy_document" "sqs" {
       "sqs:SendMessage"
     ]
     condition {
-      test     = "ArnEquals"
+      test = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = aws_s3_bucket.default.*.arn
+      values = aws_s3_bucket.default.*.arn
+    }
+    condition {
+      test = "StringEquals"
+      variable = "aws:SourceAccount"
+      values = [
+        data.aws_caller_identity.current.account_id]
     }
   }
 }
