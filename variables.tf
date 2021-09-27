@@ -138,7 +138,7 @@ variable "allow_encrypted_uploads_only" {
 
 variable "allow_ssl_requests_only" {
   type        = bool
-  default     = false
+  default     = true
   description = "Set to `true` to require requests to use Secure Socket Layer (HTTPS/SSL). This will explicitly deny access to HTTP requests"
 }
 
@@ -146,4 +146,22 @@ variable "versioning_mfa_delete_enabled" {
   type        = string
   default     = false
   description = "Enable MFA delete for the bucket"
+}
+
+variable "bucket_notifications_enabled" {
+  type        = bool
+  description = "Send notifications for the object created events. Used for 3rd-party log collection from a bucket"
+  default     = false
+}
+
+variable "bucket_notifications_type" {
+  type        = string
+  description = "Type of the notification configuration. Only SQS is supported."
+  default     = "SQS"
+}
+
+variable "bucket_notifications_prefix" {
+  type        = string
+  description = "Prefix filter. Used to manage object notifications"
+  default     = ""
 }
