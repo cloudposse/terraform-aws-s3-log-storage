@@ -183,7 +183,7 @@ resource "aws_s3_bucket_public_access_block" "default" {
 # It is safe to always set to BucketOwnerPreferred. The bucket owner will own the object 
 # if the object is uploaded with the bucket-owner-full-control canned ACL. Without 
 # this setting and canned ACL, the object is uploaded and remains owned by the uploading account.
-resource "aws_s3_bucket_ownership_controls" "example" {
+resource "aws_s3_bucket_ownership_controls" "default" {
   count  = module.this.enabled ? 1 : 0
   bucket = join("", aws_s3_bucket.default.*.id)
 
