@@ -190,4 +190,12 @@ resource "aws_s3_bucket_ownership_controls" "default" {
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
+  depends_on = [time_sleep.wait_for_aws_s3_bucket_policy]
+}
+
+# Workaround S3 eventual consistency for settings objects
+resource "time_sleep" "wait_for_aws_s3_bucket_policy" {
+  depends_on       = [aws_s3_bucket_policy.default]
+  create_duration  = "30s"
+  destroy_duration = "30s"
 }
