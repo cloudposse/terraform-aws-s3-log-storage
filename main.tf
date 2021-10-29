@@ -178,3 +178,25 @@ resource "aws_s3_bucket_public_access_block" "default" {
   ignore_public_acls      = var.ignore_public_acls
   restrict_public_buckets = var.restrict_public_buckets
 }
+
+# Per https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html
+# It is safe to always set to BucketOwnerPreferred. The bucket owner will own the object 
+# if the object is uploaded with the bucket-owner-full-control canned ACL. Without 
+# this setting and canned ACL, the object is uploaded and remains owned by the uploading account.
+resource "aws_s3_bucket_ownership_controls" "default" {
+  count  = module.this.enabled ? 1 : 0
+  bucket = join("", aws_s3_bucket.default.*.id)
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+  depends_on = [time_sleep.wait_for_aws_s3_bucket_settings]
+}
+
+# Workaround S3 eventual consistency for settings objects
+resource "time_sleep" "wait_for_aws_s3_bucket_settings" {
+  count            = module.this.enabled ? 1 : 0
+  depends_on       = [aws_s3_bucket_public_access_block.default, aws_s3_bucket_policy.default]
+  create_duration  = "30s"
+  destroy_duration = "30s"
+}
