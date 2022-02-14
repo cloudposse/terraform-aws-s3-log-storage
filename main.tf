@@ -32,7 +32,7 @@ resource "aws_s3_bucket_versioning" "log_bucket" {
 
 resource "aws_s3_bucket_lifecycle_configuration" "bucket_lifecycle_config" {
   // MFA Enabled is not compatible with lifecycle management - https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-and-other-bucket-config.html
-  count = module.this.enabled && !var.versioning_mfa_delete_enabled ? 1 : 0
+  count = module.this.enabled && ! var.versioning_mfa_delete_enabled ? 1 : 0
 
   bucket = aws_s3_bucket.default[0].bucket
 
