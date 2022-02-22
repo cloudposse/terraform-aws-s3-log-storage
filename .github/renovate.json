@@ -4,7 +4,7 @@
     ":preserveSemverRanges"
   ],
   "labels": ["auto-update"],
-  "enabledManagers": [],
+  "enabledManagers": ["terraform"],
   "terraform": {
     "ignorePaths": ["**/context.tf", "examples/**"]
   }
