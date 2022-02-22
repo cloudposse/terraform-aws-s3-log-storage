@@ -40,16 +40,16 @@ variable "versioning_enabled" {
   default     = true
 }
 
+variable "enable_noncurrent_version_expiration" {
+  type        = bool
+  default     = true
+  description = "Enable expiration of non-current versions"
+}
+
 variable "noncurrent_version_expiration_days" {
   type        = number
   default     = 90
-  description = "Specifies when noncurrent object versions expire"
-}
-
-variable "noncurrent_version_transition_days" {
-  type        = number
-  default     = 30
-  description = "Specifies when noncurrent object versions transitions"
+  description = "Specifies when non-current object versions expire"
 }
 
 variable "standard_transition_days" {
@@ -58,16 +58,22 @@ variable "standard_transition_days" {
   description = "Number of days to persist in the standard storage tier before moving to the infrequent access tier"
 }
 
-variable "glacier_transition_days" {
-  type        = number
-  default     = 60
-  description = "Number of days after which to move the data to the glacier storage tier"
-}
-
 variable "enable_glacier_transition" {
   type        = bool
   default     = true
   description = "Enables the transition to AWS Glacier which can cause unnecessary costs for huge amount of small files"
+}
+
+variable "glacier_transition_days" {
+  type        = number
+  default     = 60
+  description = "Number of days after which to move the data to the Glacier Flexible Retrieval storage tier"
+}
+
+variable "noncurrent_version_transition_days" {
+  type        = number
+  default     = null
+  description = "Specifies when noncurrent object versions transition to Glacier Flexible Retrieval"
 }
 
 variable "expiration_days" {
@@ -140,12 +146,6 @@ variable "allow_ssl_requests_only" {
   type        = bool
   default     = true
   description = "Set to `true` to require requests to use Secure Socket Layer (HTTPS/SSL). This will explicitly deny access to HTTP requests"
-}
-
-variable "versioning_mfa_delete_enabled" {
-  type        = string
-  default     = false
-  description = "Enable MFA delete for the bucket"
 }
 
 variable "bucket_notifications_enabled" {

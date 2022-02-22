@@ -1,15 +1,15 @@
 output "bucket_domain_name" {
-  value       = join("", aws_s3_bucket.default.*.bucket_domain_name)
+  value       = module.aws_s3_bucket.bucket_domain_name
   description = "FQDN of bucket"
 }
 
 output "bucket_id" {
-  value       = join("", aws_s3_bucket.default.*.id)
+  value       = module.aws_s3_bucket.bucket_id
   description = "Bucket Name (aka ID)"
 }
 
 output "bucket_arn" {
-  value       = join("", aws_s3_bucket.default.*.arn)
+  value       = module.aws_s3_bucket.bucket_arn
   description = "Bucket ARN"
 }
 
