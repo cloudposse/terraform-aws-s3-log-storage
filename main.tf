@@ -47,7 +47,7 @@ moved {
 
 module "aws_s3_bucket" {
   source  = "cloudposse/s3-bucket/aws"
-  version = "0.47.0"
+  version = "0.48.0"
 
   bucket_name        = module.this.id
   acl                = var.acl
