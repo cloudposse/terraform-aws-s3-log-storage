@@ -72,7 +72,7 @@ variable "glacier_transition_days" {
 
 variable "noncurrent_version_transition_days" {
   type        = number
-  default     = null
+  default     = 30
   description = "Specifies when noncurrent object versions transition to Glacier Flexible Retrieval"
 }
 
