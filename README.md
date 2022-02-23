@@ -141,14 +141,14 @@ Available targets:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.0, < 4.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | < 4.3 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.7 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.0, < 4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | < 4.3 |
 
 ## Modules
 
