@@ -47,7 +47,7 @@ moved {
 
 module "aws_s3_bucket" {
   source  = "cloudposse/s3-bucket/aws"
-  version = "0.47.0"
+  version = "0.47.1"
 
   bucket_name        = module.this.id
   acl                = var.acl
@@ -55,7 +55,8 @@ module "aws_s3_bucket" {
   policy             = var.policy
   versioning_enabled = var.versioning_enabled
 
-  lifecycle_rules = [local.lifecycle_rule]
+  lifecycle_rule_ids = [module.this.id]
+  lifecycle_rules    = [local.lifecycle_rule]
 
   logging = var.access_log_bucket_name == "" ? null : {
     bucket_name = var.access_log_bucket_name

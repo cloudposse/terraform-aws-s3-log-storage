@@ -30,7 +30,13 @@
 
 This module creates an S3 bucket suitable for receiving logs from other `AWS` services such as `S3`, `CloudFront`, and `CloudTrails`.
 
-It implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (_e.g._ `Glacier`) and ultimately expire the data altogether.
+**WARNING:** Changes introduced in version 0.27.0 present a **HIGH RISK OF DATA LOSS** when upgrading from an
+earlier version. This warning does not apply to new deployments created with version 0.28.0 or later, but 
+if upgrading from an earlier version, please follow the 
+[upgrade instructions](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS))
+in this repo's Wiki.
+
+This module implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (_e.g._ `Glacier`) and ultimately expire the data altogether.
 
 It enables server-side default encryption.
 
@@ -39,6 +45,11 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html
 It blocks public access to the bucket by default.
 
 https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-block-public-access.html
+
+As of March, 2022, this module is primarily a wrapper around our 
+[s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket)
+module, with some options preconfigured and SQS notifications added. If it does not exactly suit your needs,
+you may want to use the `s3-bucket` module directly.
 
 ---
 
@@ -103,6 +114,14 @@ the registry shows many of our inputs as required when in fact they are optional
 The table below correctly indicates which inputs are required.
 
 
+
+**WARNING:** Changes introduced in version 0.27.0 present a **HIGH RISK OF DATA LOSS** when upgrading from an
+earlier version. This warning does not apply to new deployments created with version 0.28.0 or later, but 
+if upgrading from an earlier version, please follow the 
+[upgrade instructions](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS))
+in this repo's Wiki.
+
+
 ```hcl
 module "log_storage" {
   source = "cloudposse/s3-log-storage/aws"
@@ -154,7 +173,7 @@ Available targets:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aws_s3_bucket"></a> [aws\_s3\_bucket](#module\_aws\_s3\_bucket) | cloudposse/s3-bucket/aws | 0.47.0 |
+| <a name="module_aws_s3_bucket"></a> [aws\_s3\_bucket](#module\_aws\_s3\_bucket) | cloudposse/s3-bucket/aws | 0.47.1 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 
 ## Resources
@@ -244,6 +263,7 @@ Are you using this project or any of our other projects? Consider [leaving a tes
 
 Check out these related projects.
 
+- [terraform-aws-s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket) - Terraform module that creates an S3 bucket with an optional IAM user for external CI/CD systems
 - [terraform-aws-cloudfront-s3-cdn](https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn) - Terraform module to easily provision CloudFront CDN backed by an S3 origin
 - [terraform-aws-s3-website](https://github.com/cloudposse/terraform-aws-s3-website) - Terraform Module for Creating S3 backed Websites and Route53 DNS
 - [terraform-aws-user-data-s3-backend](https://github.com/cloudposse/terraform-aws-user-data-s3-backend) - Terraform Module to Offload User Data to S3
