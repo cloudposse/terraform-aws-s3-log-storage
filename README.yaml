@@ -24,6 +24,9 @@ badges:
   image: https://slack.cloudposse.com/badge.svg
   url: https://slack.cloudposse.com
 related:
+- name: terraform-aws-s3-bucket
+  description:  Terraform module that creates an S3 bucket with an optional IAM user for external CI/CD systems
+  url: https://github.com/cloudposse/terraform-aws-s3-bucket
 - name: terraform-aws-cloudfront-s3-cdn
   description: Terraform module to easily provision CloudFront CDN backed by an S3
     origin
@@ -45,7 +48,13 @@ related:
 description: |-
   This module creates an S3 bucket suitable for receiving logs from other `AWS` services such as `S3`, `CloudFront`, and `CloudTrails`.
 
-  It implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (_e.g._ `Glacier`) and ultimately expire the data altogether.
+  **WARNING:** Changes introduced in version 0.27.0 present a **HIGH RISK OF DATA LOSS** when upgrading from an
+  earlier version. This warning does not apply to new deployments created with version 0.28.0 or later, but 
+  if upgrading from an earlier version, please follow the 
+  [upgrade instructions](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS))
+  in this repo's Wiki.
+  
+  This module implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (_e.g._ `Glacier`) and ultimately expire the data altogether.
 
   It enables server-side default encryption.
 
@@ -54,7 +63,21 @@ description: |-
   It blocks public access to the bucket by default.
 
   https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-block-public-access.html
+  
+  As of March, 2022, this module is primarily a wrapper around our 
+  [s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket)
+  module, with some options preconfigured and SQS notifications added. If it does not exactly suit your needs,
+  you may want to use the `s3-bucket` module directly.
+
 usage: |-
+  
+  **WARNING:** Changes introduced in version 0.27.0 present a **HIGH RISK OF DATA LOSS** when upgrading from an
+  earlier version. This warning does not apply to new deployments created with version 0.28.0 or later, but 
+  if upgrading from an earlier version, please follow the 
+  [upgrade instructions](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS))
+  in this repo's Wiki.
+  
+  
   ```hcl
   module "log_storage" {
     source = "cloudposse/s3-log-storage/aws"

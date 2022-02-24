@@ -26,6 +26,12 @@ variable "force_destroy" {
   type        = bool
   description = "(Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable"
   default     = false
+  validation {
+    condition = (var.force_destroy == false)
+    # Error messages must be written on a single line.
+    # See https://github.com/hashicorp/terraform/issues/24123
+    error_message = "Because of the HIGH RISK OF DATA LOSS when using this version of this module, force_destroy must be set to false.\n\nWARNING: If you applied a previous version of the module with force_destroy set to true,\nsimply setting it to false here will NOT protect your data. You must set it false and apply\nthe previous version first in order to safeguard your data. See the Wiki entry at\nhttps://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS)\nfor more details."
+  }
 }
 
 variable "lifecycle_rule_enabled" {
