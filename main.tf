@@ -1,30 +1,7 @@
-locals {
-  lifecycle_rule = {
-    enabled = var.lifecycle_rule_enabled
-    prefix  = var.lifecycle_prefix
-    tags    = var.lifecycle_tags
-
-    abort_incomplete_multipart_upload_days = var.abort_incomplete_multipart_upload_days
-
-    enable_glacier_transition            = var.enable_glacier_transition
-    enable_deeparchive_transition        = false
-    enable_standard_ia_transition        = true
-    enable_current_object_expiration     = true
-    enable_noncurrent_version_expiration = var.enable_noncurrent_version_expiration
-
-    noncurrent_version_glacier_transition_days     = var.noncurrent_version_transition_days
-    noncurrent_version_deeparchive_transition_days = null
-    noncurrent_version_expiration_days             = var.noncurrent_version_expiration_days
-
-    standard_transition_days    = var.standard_transition_days
-    glacier_transition_days     = var.glacier_transition_days
-    deeparchive_transition_days = null
-    expiration_days             = var.expiration_days
-  }
-}
 
 # Terraform prior to 1.1 does not support a `moved` block.
-# Terraform 1.1 does not a support move to an object declared in external module package.
+# Terraform 1.1 supports `moved` blocks in general, but does not a support
+# a move to an object declared in external module package.
 # Leaving this here for documentation and in case Terraform later supports it.
 /*
 moved {
@@ -45,26 +22,59 @@ moved {
 }
 */
 
+locals {
+  # This is a big hack to enable us to generate something close to a custom error message
+  force_destroy_error_message = <<-EOT
+
+    ** ERROR: You must set `force_destroy_enabled = true` to enable `force_destroy`. **n/
+    ** WARNING: Upgrading this module from a version prior to 0.27.0 to this version **n/
+    **  will cause Terraform to delete your existing S3 bucket CAUSING COMPLETE DATA LOSS **n/
+    **  unless you follow the upgrade instructions on the Wiki [here](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS)). **n/
+    **  See additional instructions for upgrading from v0.27.0 to v0.28.0 [here](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.28.0-and-AWS-provider-v4-(POTENTIAL-DATA-LOSS)). **n/
+
+    EOT
+  force_destroy_safety = {
+    true = {
+      true  = "true"
+      false = "false"
+    },
+    false = {
+      true  = local.force_destroy_error_message
+      false = "false"
+    }
+  }
+  # Generate an error message when `force_destroy == true && force_destroy_enabled == false`
+  force_destroy = tobool(local.force_destroy_safety[var.force_destroy_enabled][var.force_destroy])
+
+  bucket_name = var.bucket_name == null || var.bucket_name == "" ? module.this.id : var.bucket_name
+}
+
 module "aws_s3_bucket" {
   source  = "cloudposse/s3-bucket/aws"
-  version = "0.47.1"
+  version = "0.49.0"
 
-  bucket_name        = module.this.id
+  bucket_name        = local.bucket_name
   acl                = var.acl
-  force_destroy      = var.force_destroy
-  policy             = var.policy
+  force_destroy      = local.force_destroy
   versioning_enabled = var.versioning_enabled
 
-  lifecycle_rule_ids = [module.this.id]
-  lifecycle_rules    = [local.lifecycle_rule]
+  source_policy_documents = var.source_policy_documents
+  # Support deprecated `policy` input
+  policy = var.policy
+
+  lifecycle_configuration_rules = var.lifecycle_configuration_rules
+  # Support deprecated lifecycle inputs
+  lifecycle_rule_ids = local.deprecated_lifecycle_rule.enabled ? [module.this.id] : null
+  lifecycle_rules    = local.deprecated_lifecycle_rule.enabled ? [local.deprecated_lifecycle_rule] : null
 
   logging = var.access_log_bucket_name == "" ? null : {
     bucket_name = var.access_log_bucket_name
-    prefix      = "${var.access_log_bucket_prefix}${module.this.id}/"
+    prefix      = "${var.access_log_bucket_prefix}${local.bucket_name}/"
   }
 
   sse_algorithm      = var.sse_algorithm
   kms_master_key_arn = var.kms_master_key_arn
+  bucket_key_enabled = var.bucket_key_enabled
 
   allow_encrypted_uploads_only = var.allow_encrypted_uploads_only
   allow_ssl_requests_only      = var.allow_ssl_requests_only
@@ -74,7 +84,7 @@ module "aws_s3_bucket" {
   ignore_public_acls      = var.ignore_public_acls
   restrict_public_buckets = var.restrict_public_buckets
 
-  s3_object_ownership = "BucketOwnerPreferred"
+  s3_object_ownership = var.s3_object_ownership
 
   context = module.this.context
 }

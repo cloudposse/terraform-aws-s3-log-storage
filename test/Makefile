@@ -33,9 +33,7 @@ clean:
 all: module examples/complete
 
 ## Run basic sanity checks against the module itself
-# Temporarily remove provider pinning test while working on AWS provider v4.0 support
-#module: export TESTS ?= installed lint module-pinning provider-pinning validate terraform-docs input-descriptions output-descriptions
-module: export TESTS ?= installed lint module-pinning validate terraform-docs input-descriptions output-descriptions
+module: export TESTS ?= installed lint module-pinning provider-pinning validate terraform-docs input-descriptions output-descriptions
 module: deps
 	$(call RUN_TESTS, ../)
 

@@ -1,6 +1,6 @@
 # Compiled files
 *.tfstate
-*.tfstate.backup
+*.tfstate.backup*
 *.lock.info
 **/.terraform.lock.hcl
 
