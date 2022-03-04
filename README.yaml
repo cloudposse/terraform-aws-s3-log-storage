@@ -92,6 +92,54 @@ usage: |-
     expiration_days          = 90
   }
   ```
+  
+  This module supports full S3 [storage lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html) configuration:
+
+  ```hcl
+  locals {
+    lifecycle_configuration_rule = {
+      enabled = true # bool
+      id      = "v2rule"
+
+      abort_incomplete_multipart_upload_days = 1 # number
+
+      filter_and = null
+      expiration = {
+        days = 120 # integer > 0
+      }
+      noncurrent_version_expiration = {
+        newer_noncurrent_versions = 3  # integer > 0
+        noncurrent_days           = 60 # integer >= 0
+      }
+      transition = [{
+        days          = 30            # integer >= 0
+        storage_class = "STANDARD_IA" # string/enum, one of GLACIER, STANDARD_IA, ONEZONE_IA, INTELLIGENT_TIERING, DEEP_ARCHIVE, GLACIER_IR.
+        },
+        {
+          days          = 60           # integer >= 0
+          storage_class = "ONEZONE_IA" # string/enum, one of GLACIER, STANDARD_IA, ONEZONE_IA, INTELLIGENT_TIERING, DEEP_ARCHIVE, GLACIER_IR.
+      }]
+      noncurrent_version_transition = [{
+        newer_noncurrent_versions = 3            # integer >= 0
+        noncurrent_days           = 30           # integer >= 0
+        storage_class             = "ONEZONE_IA" # string/enum, one of GLACIER, STANDARD_IA, ONEZONE_IA, INTELLIGENT_TIERING, DEEP_ARCHIVE, GLACIER_IR.
+      }]
+    }
+  }
+  
+  module "log_storage" {
+    source = "cloudposse/s3-log-storage/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
+    name                     = "logs"
+    stage                    = "test"
+    namespace                = "eg"
+    
+    lifecycle_configuration_rules = [var.lifecycle_configuration_rule]
+  }
+
+  ```
+
 include:
 - docs/targets.md
 - docs/terraform.md
