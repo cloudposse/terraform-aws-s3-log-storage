@@ -4,7 +4,6 @@ variable "policy" {
   default     = ""
 }
 
-
 variable "lifecycle_rule_enabled" {
   type        = bool
   default     = true
