@@ -13,11 +13,6 @@ output "bucket_arn" {
   description = "Bucket ARN"
 }
 
-output "prefix" {
-  value       = var.lifecycle_prefix
-  description = "Prefix configured for lifecycle rules"
-}
-
 output "bucket_notifications_sqs_queue_arn" {
   value       = join("", aws_sqs_queue.notifications.*.arn)
   description = "Notifications SQS queue ARN"

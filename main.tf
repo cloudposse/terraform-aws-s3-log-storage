@@ -23,29 +23,6 @@ moved {
 */
 
 locals {
-  # This is a big hack to enable us to generate something close to a custom error message
-  force_destroy_error_message = <<-EOT
-
-    ** ERROR: You must set `force_destroy_enabled = true` to enable `force_destroy`. **n/
-    ** WARNING: Upgrading this module from a version prior to 0.27.0 to this version **n/
-    **  will cause Terraform to delete your existing S3 bucket CAUSING COMPLETE DATA LOSS **n/
-    **  unless you follow the upgrade instructions on the Wiki [here](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS)). **n/
-    **  See additional instructions for upgrading from v0.27.0 to v0.28.0 [here](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.28.0-and-AWS-provider-v4-(POTENTIAL-DATA-LOSS)). **n/
-
-    EOT
-  force_destroy_safety = {
-    true = {
-      true  = "true"
-      false = "false"
-    },
-    false = {
-      true  = local.force_destroy_error_message
-      false = "false"
-    }
-  }
-  # Generate an error message when `force_destroy == true && force_destroy_enabled == false`
-  force_destroy = tobool(local.force_destroy_safety[var.force_destroy_enabled][var.force_destroy])
-
   bucket_name = var.bucket_name == null || var.bucket_name == "" ? module.this.id : var.bucket_name
 }
 
@@ -55,17 +32,15 @@ module "aws_s3_bucket" {
 
   bucket_name        = local.bucket_name
   acl                = var.acl
-  force_destroy      = local.force_destroy
+  force_destroy      = var.force_destroy
   versioning_enabled = var.versioning_enabled
 
   source_policy_documents = var.source_policy_documents
-  # Support deprecated `policy` input
-  policy = var.policy
 
   lifecycle_configuration_rules = var.lifecycle_configuration_rules
   # Support deprecated lifecycle inputs
-  lifecycle_rule_ids = local.deprecated_lifecycle_rule.enabled ? [module.this.id] : null
-  lifecycle_rules    = local.deprecated_lifecycle_rule.enabled ? [local.deprecated_lifecycle_rule] : null
+  lifecycle_rule_ids = null
+  lifecycle_rules    = null
 
   logging = var.access_log_bucket_name == "" ? null : {
     bucket_name = var.access_log_bucket_name
