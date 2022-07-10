@@ -4,7 +4,7 @@ output "bucket_domain_name" {
 }
 
 output "bucket_id" {
-  value       = module.aws_s3_bucket.bucket_id
+  value       = module.this.id #module.aws_s3_bucket.bucket_id
   description = "Bucket Name (aka ID)"
 }
 
