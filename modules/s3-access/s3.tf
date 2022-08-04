@@ -2,10 +2,9 @@
 # S3 Bucket Labels
 # ------------------------------------------------------------------------------
 module "s3_bucket_meta" {
-  source     = "registry.terraform.io/cloudposse/label/null"
-  version    = "0.25.0"
-  context    = module.this.context
-  attributes = ["s3-access-logs"]
+  source  = "registry.terraform.io/cloudposse/label/null"
+  version = "0.25.0"
+  context = module.this.context
 }
 
 
@@ -13,9 +12,8 @@ module "s3_bucket_meta" {
 # S3 Bucket
 # ------------------------------------------------------------------------------
 module "s3_bucket" {
-  source     = "app.terraform.io/SevenPico/s3-log-storage/aws"
-  version    = "0.28.0.3"
-  context    = module.s3_bucket_meta.context
+  source  = "../../"
+  context = module.s3_bucket_meta.context
 
   access_log_bucket_name            = var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override
@@ -41,7 +39,7 @@ module "s3_bucket" {
 }
 
 resource "aws_s3_bucket_logging" "s3_access_logs" {
-  count = module.s3_bucket_meta.enabled ? 1 : 0
+  count  = module.s3_bucket_meta.enabled ? 1 : 0
   bucket = module.s3_bucket.bucket_id
 
   target_bucket = module.s3_bucket.bucket_id

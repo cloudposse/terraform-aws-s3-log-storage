@@ -1,0 +1,1 @@
+attributes    = ["cloudfront-access-logs"]

@@ -5,7 +5,6 @@ module "s3_bucket_meta" {
   source  = "registry.terraform.io/cloudposse/label/null"
   version = "0.25.0"
   context = module.this.context
-  name    = "cloudfront-access-logs"
 }
 
 

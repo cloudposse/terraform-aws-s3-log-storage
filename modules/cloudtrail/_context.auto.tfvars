@@ -1,0 +1,1 @@
+attributes    = ["cloudtrail-logs"]

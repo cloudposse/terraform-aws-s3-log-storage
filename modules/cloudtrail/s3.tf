@@ -5,7 +5,6 @@ module "s3_bucket_meta" {
   source  = "registry.terraform.io/cloudposse/label/null"
   version = "0.25.0"
   context = module.this.context
-  name    = "cloudtrail-logs"
 }
 
 
@@ -13,8 +12,8 @@ module "s3_bucket_meta" {
 # S3 Bucket Policy
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "s3_bucket" {
-  count       = module.s3_bucket_meta.enabled ? 1 : 0
-  source_json = var.s3_bucket_policy_source_json == "" ? null : var.s3_bucket_policy_source_json
+  count                   = module.s3_bucket_meta.enabled ? 1 : 0
+  source_policy_documents = var.s3_bucket_policy_source_json == "" ? [] : [var.s3_bucket_policy_source_json]
 
   statement {
     sid = "AWSCloudTrailAclCheck"

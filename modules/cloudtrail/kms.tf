@@ -13,8 +13,8 @@ module "s3_bucket_kms_key_meta" {
 # S3 Bucket KMS Key Policy
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "kms_key" {
-  count       = module.s3_bucket_meta.enabled ? 1 : 0
-  source_json = var.kms_key_policy_source_json
+  count                   = module.s3_bucket_meta.enabled ? 1 : 0
+  source_policy_documents = [var.kms_key_policy_source_json]
   statement {
     sid    = "Enable Root User Permissions"
     effect = "Allow"

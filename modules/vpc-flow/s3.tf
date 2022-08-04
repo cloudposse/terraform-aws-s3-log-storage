@@ -2,10 +2,9 @@
 # S3 Bucket Labels
 # ------------------------------------------------------------------------------
 module "s3_bucket_meta" {
-  source     = "registry.terraform.io/cloudposse/label/null"
-  version    = "0.25.0"
-  context    = module.this.context
-  attributes = ["vpc-flow-logs"]
+  source  = "registry.terraform.io/cloudposse/label/null"
+  version = "0.25.0"
+  context = module.this.context
 }
 
 
@@ -14,6 +13,8 @@ module "s3_bucket_meta" {
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "s3_bucket" {
   count = module.s3_bucket_meta.enabled ? 1 : 0
+  source_policy_documents = var.s3_bucket_policy_source_json == "" ? [] : [var.s3_bucket_policy_source_json]
+
   statement {
     sid = "AWSLogDeliveryWrite"
 
@@ -63,8 +64,7 @@ data "aws_iam_policy_document" "s3_bucket" {
 # S3 Bucket
 # ------------------------------------------------------------------------------
 module "s3_bucket" {
-  source  = "app.terraform.io/SevenPico/s3-log-storage/aws"
-  version = "0.28.0.3"
+  source  = "../../"
   context = module.s3_bucket_meta.context
 
   access_log_bucket_name            = var.access_log_bucket_name
