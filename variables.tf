@@ -98,7 +98,7 @@ variable "access_log_bucket_name" {
 
 variable "access_log_bucket_prefix_override" {
   type        = string
-  default     = "logs/"
+  default     = ""
   description = "Prefix to prepend to the current S3 bucket name, where S3 access logs will be sent to"
 }
 
