@@ -15,7 +15,7 @@ module "s3_bucket" {
   source  = "../../"
   context = module.s3_bucket_meta.context
 
-  access_log_bucket_name            = var.access_log_to_self ? module.s3_bucket_meta.id : var.access_log_bucket_name
+  access_log_bucket_name            = var.access_log_to_self ? "" : var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override
   acl                               = "log-delivery-write"
   allow_encrypted_uploads_only      = false
@@ -38,10 +38,11 @@ module "s3_bucket" {
   versioning_enabled                = true
 }
 
-resource "aws_s3_bucket_logging" "s3_access_logs" {
-  count  = module.s3_bucket_meta.enabled ? 1 : 0
-  bucket = module.s3_bucket.bucket_id
+resource "aws_s3_bucket_logging" "self" {
+  count  = module.s3_bucket_meta.enabled && var.access_log_to_self ? 1 : 0
+  depends_on = [module.s3_bucket]
 
-  target_bucket = module.s3_bucket.bucket_id
-  target_prefix = module.s3_bucket_meta.id
+  bucket = module.s3_bucket_meta.id
+  target_bucket = module.s3_bucket_meta.id
+  target_prefix = var.access_log_bucket_prefix_override == null || var.access_log_bucket_prefix_override == "" ? "${module.s3_bucket_meta.id}/" : "${var.access_log_bucket_prefix_override}/"
 }
