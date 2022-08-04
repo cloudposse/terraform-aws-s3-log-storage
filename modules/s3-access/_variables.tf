@@ -13,10 +13,16 @@ variable "s3_bucket_policy_source_json" {
   default = ""
 }
 
+variable "access_log_to_self" {
+  type        = bool
+  default     = true
+  description = "If true, the bucket will record its access logs to itself."
+}
+
 variable "access_log_bucket_name" {
   type        = string
   default     = ""
-  description = "Name of the S3 bucket where S3 access logs will be sent to"
+  description = "Name of the S3 bucket where S3 access logs will be sent to."
 }
 
 variable "access_log_bucket_prefix_override" {
