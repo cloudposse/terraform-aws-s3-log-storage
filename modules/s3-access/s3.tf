@@ -15,7 +15,7 @@ module "s3_bucket" {
   source  = "../../"
   context = module.s3_bucket_meta.context
 
-  access_log_bucket_name            = var.access_log_to_self ? "" : var.access_log_bucket_name
+  access_log_bucket_name            = var.access_log_to_self ? null : var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override
   acl                               = "log-delivery-write"
   allow_encrypted_uploads_only      = false
@@ -41,6 +41,7 @@ module "s3_bucket" {
 resource "aws_s3_bucket_logging" "self" {
   count      = module.s3_bucket_meta.enabled && var.access_log_to_self ? 1 : 0
   depends_on = [module.s3_bucket]
+
 
   bucket        = length(module.s3_bucket.bucket_id) > 0 ? module.s3_bucket.bucket_id : "abc"
   target_bucket = length(module.s3_bucket.bucket_id) > 0 ? module.s3_bucket.bucket_id : "abc"
