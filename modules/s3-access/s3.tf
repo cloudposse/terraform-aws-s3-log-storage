@@ -16,7 +16,7 @@ module "s3_log_storage" {
   source  = "../../"
   context = module.s3_log_storage_meta.context
 
-  access_log_bucket_name            = var.access_log_to_self ? null : var.access_log_bucket_name
+  access_log_bucket_name            = var.access_log_to_self ? "" : var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override
   acl                               = "log-delivery-write"
   allow_encrypted_uploads_only      = false
