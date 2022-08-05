@@ -43,8 +43,7 @@ resource "aws_s3_bucket_logging" "self" {
   count      = module.s3_log_storage_meta.enabled && var.access_log_to_self ? 1 : 0
   depends_on = [module.s3_log_storage]
 
-
-  bucket        = length(module.s3_log_storage.bucket_id) > 0 ? module.s3_log_storage.bucket_id : "abc"
-  target_bucket = length(module.s3_log_storage.bucket_id) > 0 ? module.s3_log_storage.bucket_id : "abc"
+  bucket        = module.s3_log_storage.bucket_arn
+  target_bucket = module.s3_log_storage.bucket_arn
   target_prefix = var.access_log_bucket_prefix_override == null || var.access_log_bucket_prefix_override == "" ? "${module.s3_log_storage_meta.id}/" : "${var.access_log_bucket_prefix_override}/"
 }
