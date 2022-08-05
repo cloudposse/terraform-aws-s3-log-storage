@@ -23,7 +23,7 @@ module "s3_bucket" {
   block_public_acls                 = true
   block_public_policy               = true
   bucket_key_enabled                = false
-  bucket_name                       = ""
+  bucket_name                       = null
   bucket_notifications_enabled      = false
   bucket_notifications_prefix       = ""
   bucket_notifications_type         = "SQS"
