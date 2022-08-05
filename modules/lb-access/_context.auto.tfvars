@@ -1,1 +1,0 @@
-attributes = ["lb-access-logs"]

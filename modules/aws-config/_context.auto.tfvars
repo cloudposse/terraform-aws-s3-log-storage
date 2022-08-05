@@ -1,1 +1,0 @@
-attributes = ["aws-config-logs"]

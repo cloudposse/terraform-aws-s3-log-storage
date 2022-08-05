@@ -1,1 +1,0 @@
-attributes = ["vpc-flow-logs"]

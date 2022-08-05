@@ -1,18 +1,19 @@
 # ------------------------------------------------------------------------------
-# S3 Bucket Labels
+# S3 Log Storage Labels
 # ------------------------------------------------------------------------------
-module "s3_bucket_meta" {
-  source  = "registry.terraform.io/cloudposse/label/null"
-  version = "0.25.0"
-  context = module.this.context
+module "s3_log_storage_meta" {
+  source     = "registry.terraform.io/cloudposse/label/null"
+  version    = "0.25.0"
+  context    = module.this.context
+  attributes = ["vpc-flow-logs"]
 }
 
 
 # ------------------------------------------------------------------------------
-# S3 Bucket IAM Policies
+# S3 Log Storage IAM Policies
 # ------------------------------------------------------------------------------
-data "aws_iam_policy_document" "s3_bucket" {
-  count = module.s3_bucket_meta.enabled ? 1 : 0
+data "aws_iam_policy_document" "s3_log_storage" {
+  count                   = module.s3_log_storage_meta.enabled ? 1 : 0
   source_policy_documents = var.s3_bucket_policy_source_json == "" ? [] : [var.s3_bucket_policy_source_json]
 
   statement {
@@ -28,7 +29,7 @@ data "aws_iam_policy_document" "s3_bucket" {
     ]
 
     resources = [
-      "${local.arn_format}:s3:::${module.s3_bucket_meta.id}/*"
+      "${local.arn_format}:s3:::${module.s3_log_storage_meta.id}/*"
     ]
 
     condition {
@@ -54,18 +55,18 @@ data "aws_iam_policy_document" "s3_bucket" {
     ]
 
     resources = [
-      "${local.arn_format}:s3:::${module.s3_bucket_meta.id}"
+      "${local.arn_format}:s3:::${module.s3_log_storage_meta.id}"
     ]
   }
 }
 
 
 # ------------------------------------------------------------------------------
-# S3 Bucket
+# S3 Log Storage
 # ------------------------------------------------------------------------------
-module "s3_bucket" {
+module "s3_log_storage" {
   source  = "../../"
-  context = module.s3_bucket_meta.context
+  context = module.s3_log_storage_meta.context
 
   access_log_bucket_name            = var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override
@@ -85,7 +86,7 @@ module "s3_bucket" {
   lifecycle_configuration_rules     = var.lifecycle_configuration_rules
   restrict_public_buckets           = true
   s3_object_ownership               = "BucketOwnerEnforced"
-  source_policy_documents           = [one(data.aws_iam_policy_document.s3_bucket[*].json)]
+  source_policy_documents           = [one(data.aws_iam_policy_document.s3_log_storage[*].json)]
   sse_algorithm                     = module.kms_key.alias_arn == "" ? "AES256" : "aws:kms"
   versioning_enabled                = true
 }

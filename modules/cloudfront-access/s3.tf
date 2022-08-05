@@ -1,19 +1,20 @@
 # ------------------------------------------------------------------------------
-# S3 Bucket Meta
+# S3 Log Storage Meta
 # ------------------------------------------------------------------------------
-module "s3_bucket_meta" {
-  source  = "registry.terraform.io/cloudposse/label/null"
-  version = "0.25.0"
-  context = module.this.context
+module "s3_log_storage_meta" {
+  source     = "registry.terraform.io/cloudposse/label/null"
+  version    = "0.25.0"
+  context    = module.this.context
+  attributes = ["cloudfront-access-logs"]
 }
 
 
 # ------------------------------------------------------------------------------
-# S3 Bucket
+# S3 Log Storage
 # ------------------------------------------------------------------------------
-module "s3_bucket" {
+module "s3_log_storage" {
   source  = "../../"
-  context = module.s3_bucket_meta.context
+  context = module.s3_log_storage_meta.context
 
   access_log_bucket_name            = var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override

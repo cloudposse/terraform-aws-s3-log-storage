@@ -1,19 +1,20 @@
 # ------------------------------------------------------------------------------
-# S3 Bucket Labels
+# S3 Log Storage Labels
 # ------------------------------------------------------------------------------
-module "s3_bucket_meta" {
-  source  = "registry.terraform.io/cloudposse/label/null"
-  version = "0.25.0"
-  context = module.this.context
+module "s3_log_storage_meta" {
+  source     = "registry.terraform.io/cloudposse/label/null"
+  version    = "0.25.0"
+  context    = module.this.context
+  attributes = ["s3-access-logs"]
 }
 
 
 # ------------------------------------------------------------------------------
-# S3 Bucket
+# S3 Log Storage
 # ------------------------------------------------------------------------------
-module "s3_bucket" {
+module "s3_log_storage" {
   source  = "../../"
-  context = module.s3_bucket_meta.context
+  context = module.s3_log_storage_meta.context
 
   access_log_bucket_name            = var.access_log_to_self ? null : var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override
@@ -39,11 +40,11 @@ module "s3_bucket" {
 }
 
 resource "aws_s3_bucket_logging" "self" {
-  count      = module.s3_bucket_meta.enabled && var.access_log_to_self ? 1 : 0
-  depends_on = [module.s3_bucket]
+  count      = module.s3_log_storage_meta.enabled && var.access_log_to_self ? 1 : 0
+  depends_on = [module.s3_log_storage]
 
 
-  bucket        = length(module.s3_bucket.bucket_id) > 0 ? module.s3_bucket.bucket_id : "abc"
-  target_bucket = length(module.s3_bucket.bucket_id) > 0 ? module.s3_bucket.bucket_id : "abc"
-  target_prefix = var.access_log_bucket_prefix_override == null || var.access_log_bucket_prefix_override == "" ? "${module.s3_bucket_meta.id}/" : "${var.access_log_bucket_prefix_override}/"
+  bucket        = length(module.s3_log_storage.bucket_id) > 0 ? module.s3_log_storage.bucket_id : "abc"
+  target_bucket = length(module.s3_log_storage.bucket_id) > 0 ? module.s3_log_storage.bucket_id : "abc"
+  target_prefix = var.access_log_bucket_prefix_override == null || var.access_log_bucket_prefix_override == "" ? "${module.s3_log_storage_meta.id}/" : "${var.access_log_bucket_prefix_override}/"
 }
