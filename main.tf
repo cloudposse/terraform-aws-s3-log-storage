@@ -36,7 +36,7 @@ module "aws_s3_bucket" {
   logging = var.access_log_bucket_name != null ? {
     bucket_name = var.access_log_bucket_name
     prefix      = var.access_log_bucket_prefix_override == null || var.access_log_bucket_prefix_override == "" ? "${module.this.id}/" : "${var.access_log_bucket_prefix_override}/"
-  } : null
+  } : {}
   object_lock_configuration     = null
   privileged_principal_actions  = []
   privileged_principal_arns     = []
