@@ -13,10 +13,10 @@ variable "force_destroy" {
   default = false
 }
 
-variable "kms_key_policy_source_json" {
-  type    = string
-  default = ""
-}
+#variable "kms_key_policy_source_json" {
+#  type    = string
+#  default = ""
+#}
 
 variable "access_log_bucket_name" {
   type        = string

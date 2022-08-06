@@ -14,7 +14,7 @@ module "kms_key_meta" {
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "kms_key" {
   count                   = module.kms_key_meta.enabled ? 1 : 0
-  source_policy_documents = [var.kms_key_policy_source_json]
+#  source_policy_documents = [var.kms_key_policy_source_json]
   statement {
     sid    = "Enable Root User Permissions"
     effect = "Allow"

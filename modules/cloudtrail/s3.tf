@@ -14,7 +14,7 @@ module "s3_log_storage_meta" {
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "s3_log_storage" {
   count                   = module.s3_log_storage_meta.enabled ? 1 : 0
-  source_policy_documents = var.s3_bucket_policy_source_json == "" ? [] : [var.s3_bucket_policy_source_json]
+#  source_policy_documents = var.s3_bucket_policy_source_json == "" ? [] : [var.s3_bucket_policy_source_json]
 
   statement {
     sid = "AWSCloudTrailAclCheck"
