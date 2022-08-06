@@ -35,13 +35,13 @@ module "aws_s3_bucket" {
   lifecycle_configuration_rules = var.lifecycle_configuration_rules
   logging = var.access_log_bucket_name != null && var.access_log_bucket_name != "" ? {
     bucket_name = var.access_log_bucket_name
-    prefix      = var.access_log_bucket_prefix_override == null && var.access_log_bucket_prefix_override == "" ? "${module.this.id}/" : "${var.access_log_bucket_prefix_override}/"
+    prefix      = var.access_log_bucket_prefix_override == null ? "${module.this.id}/" : (var.access_log_bucket_prefix_override != "" ? "${var.access_log_bucket_prefix_override}/" : "")
   } : {}
   object_lock_configuration     = null
   privileged_principal_actions  = []
   privileged_principal_arns     = []
   restrict_public_buckets       = var.restrict_public_buckets
-  s3_object_ownership           = "BucketOwnerPreferred"
+  s3_object_ownership           = var.s3_object_ownership
   s3_replica_bucket_arn         = ""
   s3_replication_enabled        = false
   s3_replication_rules          = null
