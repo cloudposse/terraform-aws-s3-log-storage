@@ -33,9 +33,9 @@ module "aws_s3_bucket" {
   ignore_public_acls            = var.ignore_public_acls
   kms_master_key_arn            = var.kms_master_key_arn
   lifecycle_configuration_rules = var.lifecycle_configuration_rules
-  logging = var.access_log_bucket_name != null || var.access_log_bucket_name != "" ? {
+  logging = var.access_log_bucket_name != null && var.access_log_bucket_name != "" ? {
     bucket_name = var.access_log_bucket_name
-    prefix      = var.access_log_bucket_prefix_override == null || var.access_log_bucket_prefix_override == "" ? "${module.this.id}/" : "${var.access_log_bucket_prefix_override}/"
+    prefix      = var.access_log_bucket_prefix_override == null && var.access_log_bucket_prefix_override == "" ? "${module.this.id}/" : "${var.access_log_bucket_prefix_override}/"
   } : {}
   object_lock_configuration     = null
   privileged_principal_actions  = []
