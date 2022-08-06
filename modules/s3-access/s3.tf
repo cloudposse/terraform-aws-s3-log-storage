@@ -45,5 +45,5 @@ resource "aws_s3_bucket_logging" "self" {
 
   bucket        = module.s3_log_storage.bucket_id
   target_bucket = module.s3_log_storage.bucket_id
-  target_prefix = var.access_log_bucket_prefix_override == null && var.access_log_bucket_prefix_override == "" ? "${module.s3_log_storage_meta.id}/" : "${var.access_log_bucket_prefix_override}/"
+  target_prefix = var.access_log_bucket_prefix_override == null ? "${module.s3_log_storage_meta.id}/" : (var.access_log_bucket_prefix_override != "" ? "${var.access_log_bucket_prefix_override}/" : "")
 }
