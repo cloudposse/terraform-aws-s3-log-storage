@@ -33,7 +33,7 @@ module "s3_log_storage" {
   kms_master_key_arn                = module.kms_key.key_arn
   lifecycle_configuration_rules     = var.lifecycle_configuration_rules
   restrict_public_buckets           = true
-  s3_object_ownership               = "BucketOwnerEnforced"
+  s3_object_ownership               = "BucketOwnerPreferred"
   source_policy_documents           = []
   sse_algorithm                     = module.kms_key.alias_arn == "" ? "AES256" : "aws:kms"
   versioning_enabled                = true
