@@ -2,13 +2,19 @@ locals {
   arn_format = "arn:${data.aws_partition.current.partition}"
 }
 
-data "aws_region" "current" {}
-
-data "aws_partition" "current" {}
-
-data "aws_caller_identity" "current" {}
 
 data "aws_elb_service_account" "default" {
   count = module.this.enabled ? 1 : 0
 }
+
+# The AWS region currently being used.
+data "aws_region" "current" {
+}
+
+# The AWS account id
+data "aws_caller_identity" "current" {
+}
+
+# The AWS partition (commercial or govcloud)
+data "aws_partition" "current" {}
 

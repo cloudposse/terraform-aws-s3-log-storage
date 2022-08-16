@@ -13,42 +13,35 @@ module "s3_log_storage_meta" {
 # S3 Log Storage Policy
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "s3_log_storage" {
-  count                   = module.s3_log_storage_meta.enabled ? 1 : 0
-#  source_policy_documents = var.s3_bucket_policy_source_json == "" ? [] : [var.s3_bucket_policy_source_json]
+  count = module.s3_log_storage_meta.enabled ? 1 : 0
+  #  source_policy_documents = var.s3_bucket_policy_source_json == "" ? [] : [var.s3_bucket_policy_source_json]
 
   statement {
     sid = "AWSCloudTrailAclCheck"
-
     principals {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
     }
-
+    effect  = "Allow"
     actions = [
       "s3:GetBucketAcl",
     ]
-
     resources = [
-      "${local.arn_format}:s3:::${module.this.id}",
+      "${local.arn_format}:s3:::${module.s3_log_storage_meta.id}",
     ]
   }
-
   statement {
     sid = "AWSCloudTrailWrite"
-
     principals {
       type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com", "config.amazonaws.com"]
+      identifiers = ["cloudtrail.amazonaws.com"]
     }
-
     actions = [
       "s3:PutObject",
     ]
-
     resources = [
-      "${local.arn_format}:s3:::${module.this.id}/*",
+      "${local.arn_format}:s3:::${module.s3_log_storage_meta.id}/*",
     ]
-
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
@@ -59,7 +52,6 @@ data "aws_iam_policy_document" "s3_log_storage" {
     }
   }
 }
-
 
 # ------------------------------------------------------------------------------
 # S3 Bucket

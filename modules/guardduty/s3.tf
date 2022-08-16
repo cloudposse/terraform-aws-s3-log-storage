@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
     ]
 
     resources = [
-      "${local.arn_format}:s3:::${module.this.id}/*",
+      "${local.arn_format}:s3:::${module.s3_log_storage_meta.id}/*",
     ]
 
     principals {
@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
     ]
 
     resources = [
-      "${local.arn_format}:s3:::${module.this.id}",
+      "${local.arn_format}:s3:::${module.s3_log_storage_meta.id}",
     ]
 
     principals {

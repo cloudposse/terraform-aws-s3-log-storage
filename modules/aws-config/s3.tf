@@ -9,8 +9,8 @@ module "s3_log_storage_meta" {
 }
 
 locals {
-  aws_config_logs_bucket_arn    = format("arn:%s:s3:::%s", data.aws_partition.current.id, module.s3_log_storage_meta.id)
-  aws_config_logs_object_prefix = format("%s/AWSLogs/*", local.aws_config_logs_bucket_arn)
+  s3_log_storage_arn    = format("arn:%s:s3:::%s", data.aws_partition.current.id, module.s3_log_storage_meta.id)
+  s3_object_prefix = format("%s/AWSLogs/*", local.s3_log_storage_arn)
 }
 
 
@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
     actions = ["s3:GetBucketAcl"]
 
     resources = [
-      local.aws_config_logs_bucket_arn
+      local.s3_log_storage_arn
     ]
   }
 
@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
     actions = ["s3:ListBucket"]
 
     resources = [
-      local.aws_config_logs_bucket_arn
+      local.s3_log_storage_arn
     ]
   }
 
@@ -70,7 +70,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
       values   = ["bucket-owner-full-control"]
     }
 
-    resources = [local.aws_config_logs_object_prefix]
+    resources = [local.s3_object_prefix]
   }
 }
 

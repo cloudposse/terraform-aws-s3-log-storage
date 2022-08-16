@@ -46,7 +46,7 @@ module "aws_s3_bucket" {
   s3_replication_enabled        = false
   s3_replication_rules          = null
   s3_replication_source_roles   = []
-  source_policy_documents       = []
+  source_policy_documents       = var.source_policy_documents
   sse_algorithm                 = var.sse_algorithm
   transfer_acceleration_enabled = false
   user_enabled                  = false

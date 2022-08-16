@@ -18,7 +18,6 @@ data "aws_iam_policy_document" "kms_key" {
   statement {
     sid    = "Enable Root User Permissions"
     effect = "Allow"
-
     actions = [
       "kms:Create*",
       "kms:Describe*",
@@ -35,7 +34,6 @@ data "aws_iam_policy_document" "kms_key" {
       "kms:ScheduleKeyDeletion",
       "kms:CancelKeyDeletion"
     ]
-
     #bridgecrew:skip=CKV_AWS_109:This policy applies only to the key it is attached to
     #bridgecrew:skip=CKV_AWS_111:This policy applies only to the key it is attached to
     resources = [
@@ -43,7 +41,6 @@ data "aws_iam_policy_document" "kms_key" {
     ]
     principals {
       type = "AWS"
-
       identifiers = [
         "${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"
       ]
@@ -52,7 +49,6 @@ data "aws_iam_policy_document" "kms_key" {
   statement {
     sid    = "Allow Cloudtrail and Config to use the key"
     effect = "Allow"
-
     actions = [
       "kms:Encrypt*",
       "kms:Decrypt*",
@@ -60,13 +56,11 @@ data "aws_iam_policy_document" "kms_key" {
       "kms:GenerateDataKey*",
       "kms:Describe*"
     ]
-
     resources = [
       "*"
     ]
     principals {
       type = "Service"
-
       identifiers = ["cloudtrail.amazonaws.com", "config.amazonaws.com"]
     }
   }
