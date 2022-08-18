@@ -2,8 +2,8 @@
 # KMS Key Policy Context
 # ------------------------------------------------------------------------------
 module "kms_key_context" {
-  source  = "registry.terraform.io/cloudposse/label/null"
-  version = "0.25.0"
+  source  = "app.terraform.io/SevenPico/context/null"
+  version = "1.0.1"
   context = module.s3_log_storage_context.self
   enabled = var.create_kms_key && module.context.enabled
 }
@@ -73,7 +73,7 @@ data "aws_iam_policy_document" "kms_key" {
 module "kms_key" {
   source  = "app.terraform.io/SevenPico/kms-key/aws"
   version = "0.12.1.1"
-  context = module.kms_key_context.context
+  context = module.kms_key_context.self
 
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
   deletion_window_in_days  = var.kms_key_deletion_window_in_days
