@@ -71,8 +71,8 @@ data "aws_iam_policy_document" "kms_key" {
 # KMS Key Policy
 # ------------------------------------------------------------------------------
 module "kms_key" {
-  source  = "registry.terraform.io/cloudposse/kms-key/aws"
-  version = "0.12.1"
+  source  = "app.terraform.io/SevenPico/kms-key/aws"
+  version = "0.12.1.1"
   context = module.kms_key_context.context
 
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
