@@ -13,8 +13,8 @@ module "kms_key_context" {
 # KMS Key Policy
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "kms_key" {
-  count                   = module.kms_key_context.enabled ? 1 : 0
-#  source_policy_documents = [var.kms_key_policy_source_json]
+  count = module.kms_key_context.enabled ? 1 : 0
+  #  source_policy_documents = [var.kms_key_policy_source_json]
   statement {
     sid    = "Enable Root User Permissions"
     effect = "Allow"
@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "kms_key" {
       "*"
     ]
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com", "config.amazonaws.com"]
     }
   }
@@ -75,8 +75,11 @@ module "kms_key" {
   version = "0.12.1"
   context = module.kms_key_context.context
 
-  description             = "KMS key for S3"
-  deletion_window_in_days = var.kms_key_deletion_window_in_days
-  enable_key_rotation     = var.kms_key_enable_key_rotation
-  policy                  = join("", data.aws_iam_policy_document.kms_key.*.json)
+  customer_master_key_spec = "SYMMETRIC_DEFAULT"
+  deletion_window_in_days  = var.kms_key_deletion_window_in_days
+  description              = "KMS key for S3"
+  enable_key_rotation      = var.kms_key_enable_key_rotation
+  key_usage                = "ENCRYPT_DECRYPT"
+  multi_region             = false
+  policy                   = join("", data.aws_iam_policy_document.kms_key.*.json)
 }

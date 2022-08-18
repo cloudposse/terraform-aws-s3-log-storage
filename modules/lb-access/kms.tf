@@ -81,8 +81,11 @@ module "kms_key" {
   version = "0.12.1"
   context = module.kms_key_context.self
 
-  description             = "KMS key for AWS Log Delivery"
-  deletion_window_in_days = var.kms_key_deletion_window_in_days
-  enable_key_rotation     = var.kms_key_enable_key_rotation
-  policy                  = join("", data.aws_iam_policy_document.kms_key.*.json)
+  customer_master_key_spec = "SYMMETRIC_DEFAULT"
+  deletion_window_in_days  = var.kms_key_deletion_window_in_days
+  description              = "KMS key for AWS Log Delivery"
+  enable_key_rotation      = var.kms_key_enable_key_rotation
+  key_usage                = "ENCRYPT_DECRYPT"
+  multi_region             = false
+  policy                   = join("", data.aws_iam_policy_document.kms_key.*.json)
 }
