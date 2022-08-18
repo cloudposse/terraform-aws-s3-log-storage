@@ -2,13 +2,13 @@
 
 
 locals {
-  bucket_name = var.bucket_name == null || var.bucket_name == "" ? module.this.id : var.bucket_name
+  bucket_name = var.bucket_name == null || var.bucket_name == "" ? module.context.id : var.bucket_name
 }
 
 module "aws_s3_bucket" {
   source  = "app.terraform.io/SevenPico/s3-bucket/aws"
   version = "2.0.3.2"
-  context = module.this.context
+  context = module.context.context
 
   acl                          = var.acl
   allow_encrypted_uploads_only = var.allow_encrypted_uploads_only
@@ -35,7 +35,7 @@ module "aws_s3_bucket" {
   lifecycle_configuration_rules = var.lifecycle_configuration_rules
   logging = var.access_log_bucket_name != null && var.access_log_bucket_name != "" ? {
     bucket_name = var.access_log_bucket_name
-    prefix      = var.access_log_bucket_prefix_override == null ? "${module.this.id}/" : (var.access_log_bucket_prefix_override != "" ? "${var.access_log_bucket_prefix_override}/" : "")
+    prefix      = var.access_log_bucket_prefix_override == null ? "${module.context.id}/" : (var.access_log_bucket_prefix_override != "" ? "${var.access_log_bucket_prefix_override}/" : "")
   } : {}
   object_lock_configuration     = null
   privileged_principal_actions  = []

@@ -1,16 +1,16 @@
 # ------------------------------------------------------------------------------
-# S3 Log StorageMeta
+# S3 Log Storage Context
 # ------------------------------------------------------------------------------
-module "s3_log_storage_meta" {
-  source     = "registry.terraform.io/cloudposse/label/null"
-  version    = "0.25.0"
-  context    = module.this.context
+module "s3_log_storage_context" {
+  source     = "app.terraform.io/SevenPico/context/null"
+  version    = "1.0.1"
+  context    = module.context.self
   attributes = ["aws-config-logs"]
 }
 
 locals {
-  s3_log_storage_arn    = format("arn:%s:s3:::%s", data.aws_partition.current.id, module.s3_log_storage_meta.id)
-  s3_object_prefix = format("%s/AWSLogs/*", local.s3_log_storage_arn)
+  s3_log_storage_arn = format("arn:%s:s3:::%s", data.aws_partition.current.id, module.s3_log_storage_context.id)
+  s3_object_prefix   = format("%s/AWSLogs/*", local.s3_log_storage_arn)
 }
 
 
@@ -18,8 +18,8 @@ locals {
 # S3 Log StoragePolicy
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "s3_log_storage" {
-  count                   = module.this.enabled ? 1 : 0
-#  source_policy_documents = var.s3_bucket_policy_source_json == "" ? [] : [var.s3_bucket_policy_source_json]
+  count = module.context.enabled ? 1 : 0
+  #  source_policy_documents = var.s3_bucket_policy_source_json == "" ? [] : [var.s3_bucket_policy_source_json]
 
   statement {
     sid = "AWSConfigBucketPermissionsCheck"
@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
 # ------------------------------------------------------------------------------
 module "s3_log_storage" {
   source  = "../../"
-  context = module.s3_log_storage_meta.context
+  context = module.s3_log_storage_context.self
 
   access_log_bucket_name            = var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override

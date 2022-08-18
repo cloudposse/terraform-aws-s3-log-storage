@@ -4,7 +4,7 @@ locals {
 
 
 data "aws_elb_service_account" "default" {
-  count = module.this.enabled ? 1 : 0
+  count = module.context.enabled ? 1 : 0
 }
 
 # The AWS region currently being used.

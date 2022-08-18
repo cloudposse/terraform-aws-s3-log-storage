@@ -9,6 +9,6 @@ data "aws_partition" "current" {}
 data "aws_caller_identity" "current" {}
 
 data "aws_elb_service_account" "default" {
-  count = module.this.enabled ? 1 : 0
+  count = module.context.enabled ? 1 : 0
 }
 

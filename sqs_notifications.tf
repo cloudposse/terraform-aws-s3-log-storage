@@ -1,7 +1,7 @@
 locals {
-  enabled                   = module.this.enabled
+  enabled                   = module.context.enabled
   sqs_notifications_enabled = local.enabled && var.bucket_notifications_enabled && var.bucket_notifications_type == "SQS"
-  sqs_queue_name            = module.this.id
+  sqs_queue_name            = module.context.id
   partition                 = join("", data.aws_partition.current.*.partition)
 }
 
@@ -13,7 +13,7 @@ resource "aws_sqs_queue" "notifications" {
   count  = local.sqs_notifications_enabled ? 1 : 0
   name   = local.sqs_queue_name
   policy = join("", data.aws_iam_policy_document.sqs_policy.*.json)
-  tags   = module.this.tags
+  tags   = module.context.tags
 }
 
 # https://docs.aws.amazon.com/AmazonS3/latest/userguide/grant-destinations-permissions-to-s3.html

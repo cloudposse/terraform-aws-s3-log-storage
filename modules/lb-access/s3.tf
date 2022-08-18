@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------------------
-# S3 Log Storage Meta
+# S3 Log Storage Context
 # ------------------------------------------------------------------------------
-module "s3_log_storage_meta" {
-  source     = "registry.terraform.io/cloudposse/label/null"
-  version    = "0.25.0"
-  context    = module.this.context
+module "s3_log_storage_context" {
+  source     = "app.terraform.io/SevenPico/context/null"
+  version    = "1.0.1"
+  context    = module.context.self
   attributes = ["lb-access-logs"]
 }
 
@@ -13,15 +13,15 @@ module "s3_log_storage_meta" {
 # S3 Log Storage IAM Policy
 # ------------------------------------------------------------------------------
 locals {
-  s3_bucket_arn = "arn:${data.aws_partition.current.partition}:s3:::${module.s3_log_storage_meta.id}"
+  s3_bucket_arn = "arn:${data.aws_partition.current.partition}:s3:::${module.s3_log_storage_context.id}"
 }
 
 data "aws_elb_service_account" "s3_log_storage" {
-  count = module.s3_log_storage_meta.enabled ? 1 : 0
+  count = module.s3_log_storage_context.enabled ? 1 : 0
 }
 
 data "aws_iam_policy_document" "s3_log_storage" {
-  count = module.s3_log_storage_meta.enabled ? 1 : 0
+  count = module.s3_log_storage_context.enabled ? 1 : 0
 
   statement {
     sid = ""
@@ -72,7 +72,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
 # ------------------------------------------------------------------------------
 module "s3_log_storage" {
   source  = "../../"
-  context = module.s3_log_storage_meta.context
+  context = module.s3_log_storage_context.self
 
   access_log_bucket_name            = var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override

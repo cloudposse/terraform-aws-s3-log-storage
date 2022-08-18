@@ -4,7 +4,7 @@ output "bucket_domain_name" {
 }
 
 output "bucket_id" {
-  value       = module.this.id #module.aws_s3_bucket.bucket_id
+  value       = module.context.id #module.aws_s3_bucket.bucket_id #FIXME - this could be bad if bucket name is overwritten
   description = "Bucket Name (aka ID)"
 }
 
@@ -19,6 +19,6 @@ output "bucket_notifications_sqs_queue_arn" {
 }
 
 output "enabled" {
-  value       = module.this.enabled
+  value       = module.context.enabled
   description = "Is module enabled"
 }

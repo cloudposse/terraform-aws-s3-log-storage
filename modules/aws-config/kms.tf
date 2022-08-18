@@ -1,11 +1,11 @@
 # ------------------------------------------------------------------------------
-# KMS Key Policy Meta
+# KMS Key Policy Context
 # ------------------------------------------------------------------------------
-module "kms_key_meta" {
-  source  = "registry.terraform.io/cloudposse/label/null"
-  version = "0.25.0"
-  context = module.s3_log_storage_meta.context
-  enabled = var.create_kms_key && module.this.enabled
+module "kms_key_context" {
+  source  = "app.terraform.io/SevenPico/context/null"
+  version = "1.0.1"
+  context = module.s3_log_storage_context.self
+  enabled = var.create_kms_key && module.context.enabled
 }
 
 
@@ -13,8 +13,8 @@ module "kms_key_meta" {
 # KMS Key Policy
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "kms_key" {
-  count                   = module.kms_key_meta.enabled ? 1 : 0
-#  source_policy_documents = [var.kms_key_policy_source_json]
+  count = module.kms_key_context.enabled ? 1 : 0
+  #  source_policy_documents = [var.kms_key_policy_source_json]
   statement {
     sid    = "Enable Root User Permissions"
     effect = "Allow"
@@ -79,10 +79,10 @@ data "aws_iam_policy_document" "kms_key" {
 module "kms_key" {
   source  = "registry.terraform.io/cloudposse/kms-key/aws"
   version = "0.12.1"
-  context = module.kms_key_meta.context
+  context = module.kms_key_context.self
 
   description             = "KMS key for AWS Config Logs"
-  deletion_window_in_days = 10
-  enable_key_rotation     = true
+  deletion_window_in_days = var.kms_key_deletion_window_in_days
+  enable_key_rotation     = var.kms_key_enable_key_rotation
   policy                  = join("", data.aws_iam_policy_document.kms_key.*.json)
 }
