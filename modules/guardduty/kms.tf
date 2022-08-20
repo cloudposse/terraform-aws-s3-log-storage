@@ -14,39 +14,44 @@ module "kms_key_context" {
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "kms_key" {
   count = module.kms_key_context.enabled ? 1 : 0
-  #  source_policy_documents = [var.kms_key_policy_source_json]
+
+  statement {
+    sid    = "AwsRootAccess"
+    effect = "Allow"
+    actions = [
+      "kms:Create*",
+      "kms:Describe*",
+      "kms:Enable*",
+      "kms:List*",
+      "kms:Put*",
+      "kms:Update*",
+      "kms:Revoke*",
+      "kms:Disable*",
+      "kms:Get*",
+      "kms:Delete*",
+      "kms:Tag*",
+      "kms:Untag*",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion"
+    ]
+    #bridgecrew:skip=CKV_AWS_109:This policy applies only to the key it is attached to
+    #bridgecrew:skip=CKV_AWS_111:This policy applies only to the key it is attached to
+    resources = ["*"]
+    principals {
+      type = "AWS"
+      identifiers = ["${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+
   statement {
     sid = "Allow GuardDuty to encrypt findings"
-    actions = [
-      "kms:GenerateDataKey"
-    ]
-
-    resources = [
-      "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/*"
-    ]
-
+    actions = ["kms:GenerateDataKey"]
+    resources = ["arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/*"]
     principals {
       type        = "Service"
       identifiers = ["guardduty.amazonaws.com"]
     }
   }
-
-  statement {
-    sid = "Allow all users to modify/delete key (test only)"
-    actions = [
-      "kms:*"
-    ]
-
-    resources = [
-      "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/*"
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
-    }
-  }
-
 }
 
 

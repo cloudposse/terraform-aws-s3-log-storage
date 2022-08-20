@@ -14,11 +14,10 @@ module "kms_key_context" {
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "kms_key" {
   count = module.kms_key_context.enabled ? 1 : 0
-  #  source_policy_documents = [var.kms_key_policy_source_json]
-  statement {
-    sid    = "Enable Root User Permissions"
-    effect = "Allow"
 
+  statement {
+    sid    = "AwsRootAccess"
+    effect = "Allow"
     actions = [
       "kms:Create*",
       "kms:Describe*",
@@ -35,20 +34,15 @@ data "aws_iam_policy_document" "kms_key" {
       "kms:ScheduleKeyDeletion",
       "kms:CancelKeyDeletion"
     ]
-
     #bridgecrew:skip=CKV_AWS_109:This policy applies only to the key it is attached to
     #bridgecrew:skip=CKV_AWS_111:This policy applies only to the key it is attached to
-    resources = [
-      "*"
-    ]
+    resources = ["*"]
     principals {
       type = "AWS"
-
-      identifiers = [
-        "${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"
-      ]
+      identifiers = ["${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
   }
+
   statement {
     sid    = "Allow VPC Flow Logs to use the key"
     effect = "Allow"
