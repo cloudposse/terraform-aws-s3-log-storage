@@ -52,7 +52,6 @@ data "aws_iam_policy_document" "kms_key" {
   statement {
     sid    = "Allow VPC Flow Logs to use the key"
     effect = "Allow"
-
     actions = [
       "kms:Encrypt*",
       "kms:Decrypt*",
@@ -60,14 +59,23 @@ data "aws_iam_policy_document" "kms_key" {
       "kms:GenerateDataKey*",
       "kms:Describe*"
     ]
-
-    resources = [
-      "*"
-    ]
+    resources = ["*"]
     principals {
       type = "Service"
-
       identifiers = ["delivery.logs.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = concat([data.aws_caller_identity.current.account_id], var.source_accounts)
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = concat(
+        ["${local.arn_format}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
+        [for account in var.source_accounts : "arn:aws:logs:*:${account}:*"]
+      )
     }
   }
 }

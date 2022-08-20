@@ -35,6 +35,19 @@ data "aws_iam_policy_document" "s3_log_storage" {
     resources = [
       local.s3_log_storage_arn
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = concat([data.aws_caller_identity.current.account_id], var.source_accounts)
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = concat(
+        ["${local.arn_format}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
+        [for account in var.source_accounts : "arn:aws:logs:*:${account}:*"]
+      )
+    }
   }
 
   statement {
@@ -51,6 +64,19 @@ data "aws_iam_policy_document" "s3_log_storage" {
     resources = [
       local.s3_log_storage_arn
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = concat([data.aws_caller_identity.current.account_id], var.source_accounts)
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = concat(
+        ["${local.arn_format}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
+        [for account in var.source_accounts : "arn:aws:logs:*:${account}:*"]
+      )
+    }
   }
 
   statement {
@@ -68,6 +94,19 @@ data "aws_iam_policy_document" "s3_log_storage" {
       test     = "StringLike"
       variable = "s3:x-amz-acl"
       values   = ["bucket-owner-full-control"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = concat([data.aws_caller_identity.current.account_id], var.source_accounts)
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = concat(
+        ["${local.arn_format}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
+        [for account in var.source_accounts : "arn:aws:logs:*:${account}:*"]
+      )
     }
 
     resources = [local.s3_object_prefix]
@@ -100,7 +139,7 @@ module "s3_log_storage" {
   lifecycle_configuration_rules     = var.lifecycle_configuration_rules
   restrict_public_buckets           = true
   s3_object_ownership               = "BucketOwnerPreferred"
-  source_policy_documents           = [one(data.aws_iam_policy_document.s3_log_storage[*].json)]
+  source_policy_documents           = concat([one(data.aws_iam_policy_document.s3_log_storage[*].json)],var.s3_source_policy_documents)
   sse_algorithm                     = module.kms_key.alias_arn == "" ? "AES256" : "aws:kms"
   versioning_enabled                = true
 }
