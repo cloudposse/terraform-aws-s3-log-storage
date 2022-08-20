@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
     sid = "AWSCloudfrontAclCheck"
     principals {
       type        = "AWS"
-      identifiers = [for account in var.source_accounts : "${local.arn_format}:logs:*:${account}:*"]
+      identifiers = [for account in var.source_accounts : "${local.arn_format}:iam::${account}:root"]
     }
     effect  = "Allow"
     actions = [
