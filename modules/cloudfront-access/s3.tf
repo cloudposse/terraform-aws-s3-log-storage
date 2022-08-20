@@ -10,6 +10,30 @@ module "s3_log_storage_context" {
 
 
 # ------------------------------------------------------------------------------
+# S3 Log Storage Policy
+# ------------------------------------------------------------------------------
+data "aws_iam_policy_document" "s3_log_storage" {
+  count = module.s3_log_storage_context.enabled ? 1 : 0
+
+  statement {
+    sid = "AWSCloudfrontAclCheck"
+    principals {
+      type        = "AWS"
+      identifiers = [for account in var.source_accounts : "${local.arn_format}:logs:*:${account}:*"]
+    }
+    effect  = "Allow"
+    actions = [
+      "s3:GetBucketAcl",
+      "s3:PutBucketAcl"
+    ]
+    resources = [
+      "${local.arn_format}:s3:::${module.s3_log_storage_context.id}",
+    ]
+  }
+}
+
+
+# ------------------------------------------------------------------------------
 # S3 Log Storage
 # ------------------------------------------------------------------------------
 module "s3_log_storage" {
@@ -34,7 +58,7 @@ module "s3_log_storage" {
   lifecycle_configuration_rules     = var.lifecycle_configuration_rules
   restrict_public_buckets           = true
   s3_object_ownership               = "BucketOwnerPreferred"
-  source_policy_documents           = var.s3_source_policy_documents
+  source_policy_documents           = concat([one(data.aws_iam_policy_document.s3_log_storage[*].json)],var.s3_source_policy_documents)
   sse_algorithm                     = module.kms_key.alias_arn == "" ? "AES256" : "aws:kms"
   versioning_enabled                = true
 }
