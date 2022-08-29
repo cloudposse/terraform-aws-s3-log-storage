@@ -3,8 +3,8 @@
 # ------------------------------------------------------------------------------
 module "s3_log_storage_context" {
   source     = "app.terraform.io/SevenPico/context/null"
-  version    = "1.0.1"
-  context    = module.context.context
+  version    = "1.0.2"
+  context    = module.context.self
   attributes = ["guardduty-logs"]
 }
 
@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
 # ------------------------------------------------------------------------------
 module "s3_log_storage" {
   source  = "../../"
-  context = module.s3_log_storage_context.context
+  context = module.s3_log_storage_context.self
 
   access_log_bucket_name            = var.access_log_bucket_name
   access_log_bucket_prefix_override = var.access_log_bucket_prefix_override

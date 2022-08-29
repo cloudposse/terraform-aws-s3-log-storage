@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 module "kms_key_context" {
   source  = "app.terraform.io/SevenPico/context/null"
-  version = "1.0.1"
+  version = "1.0.2"
   context = module.s3_log_storage_context.self
   enabled = var.create_kms_key && module.context.enabled
 }
@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "kms_key" {
 # ------------------------------------------------------------------------------
 module "kms_key" {
   source  = "app.terraform.io/SevenPico/kms-key/aws"
-  version = "0.12.1.1"
+  version = "0.12.1.2"
   context = module.kms_key_context.self
 
   customer_master_key_spec = "SYMMETRIC_DEFAULT"

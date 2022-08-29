@@ -22,7 +22,7 @@
 
 module "context" {
   source  = "app.terraform.io/SevenPico/context/null"
-  version = "1.0.1"
+  version = "1.0.2" # requires Terraform >= 0.13.0
 
   enabled             = var.enabled
   namespace           = var.namespace
@@ -307,4 +307,4 @@ variable "dns_name_format" {
   description = "Format string for dns_name output.  Default is $${name}.$${domain_name}."
 }
 
-output "context" { value = module.context.context }
+output "self" { value = module.context.self }

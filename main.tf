@@ -8,7 +8,7 @@ locals {
 module "aws_s3_bucket" {
   source  = "app.terraform.io/SevenPico/s3-bucket/aws"
   version = "2.0.3.2"
-  context = module.context.context
+  context = module.context.self
 
   acl                          = var.acl
   allow_encrypted_uploads_only = var.allow_encrypted_uploads_only
