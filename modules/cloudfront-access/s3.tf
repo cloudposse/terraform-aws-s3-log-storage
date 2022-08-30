@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
     sid = "AWSCloudfrontAclCheck"
     principals {
       type        = "AWS"
-      identifiers = [for account in var.source_accounts : "${local.arn_format}:iam::${account}:root"]
+      identifiers = [for account in var.source_accounts : "${local.arn_prefix}:iam::${account}:root"]
     }
     effect  = "Allow"
     actions = [
@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
       "s3:PutBucketAcl",
       "s3:List*"
     ]
-    resources = ["${local.arn_format}:s3:::${module.s3_log_storage_context.id}",]
+    resources = ["${local.arn_prefix}:s3:::${module.s3_log_storage_context.id}",]
   }
 }
 

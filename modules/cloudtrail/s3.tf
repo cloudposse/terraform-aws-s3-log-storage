@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
       "s3:GetBucketAcl",
     ]
     resources = [
-      "${local.arn_format}:s3:::${module.s3_log_storage_context.id}",
+      "${local.arn_prefix}:s3:::${module.s3_log_storage_context.id}",
     ]
     condition {
       test     = "StringEquals"
@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
       test     = "ArnLike"
       variable = "aws:SourceArn"
       values   = concat(
-        ["${local.arn_format}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
+        ["${local.arn_prefix}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
         [for account in var.source_accounts : "arn:aws:logs:*:${account}:*"]
       )
     }
@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
       "s3:PutObject",
     ]
     resources = [
-      "${local.arn_format}:s3:::${module.s3_log_storage_context.id}/*",
+      "${local.arn_prefix}:s3:::${module.s3_log_storage_context.id}/*",
     ]
     condition {
       test     = "StringEquals"
@@ -72,7 +72,7 @@ data "aws_iam_policy_document" "s3_log_storage" {
       test     = "ArnLike"
       variable = "aws:SourceArn"
       values   = concat(
-        ["${local.arn_format}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
+        ["${local.arn_prefix}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
         [for account in var.source_accounts : "arn:aws:logs:*:${account}:*"]
       )
     }

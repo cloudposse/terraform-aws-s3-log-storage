@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "kms_key" {
     resources = ["*"]
     principals {
       type = "AWS"
-      identifiers = ["${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"]
+      identifiers = ["${local.arn_prefix}:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
   }
 

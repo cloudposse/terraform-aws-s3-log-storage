@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "kms_key" {
     resources = ["*"]
     principals {
       type = "AWS"
-      identifiers = ["${local.arn_format}:iam::${data.aws_caller_identity.current.account_id}:root"]
+      identifiers = ["${local.arn_prefix}:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
   }
 
@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "kms_key" {
       test     = "ArnLike"
       variable = "aws:SourceArn"
       values   = concat(
-        ["${local.arn_format}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
+        ["${local.arn_prefix}:logs:*:${data.aws_caller_identity.current.account_id}:*"],
         [for account in var.source_accounts : "arn:aws:logs:*:${account}:*"]
       )
     }
