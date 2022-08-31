@@ -35,7 +35,7 @@ module "aws_s3_bucket" {
   lifecycle_configuration_rules = var.lifecycle_configuration_rules
   logging = var.access_log_bucket_name != null && var.access_log_bucket_name != "" ? {
     bucket_name = var.access_log_bucket_name
-    prefix      = var.access_log_bucket_prefix_override == null ? "${data.aws_caller_identity.current.account_id}/${module.context.id}/" : (var.access_log_bucket_prefix_override != "" ? "${var.access_log_bucket_prefix_override}/" : "")
+    prefix      = var.access_log_bucket_prefix_override == null ? "${data.aws_caller_identity.current[0].account_id}/${module.context.id}/" : (var.access_log_bucket_prefix_override != "" ? "${var.access_log_bucket_prefix_override}/" : "")
   } : {}
   object_lock_configuration     = null
   privileged_principal_actions  = []
