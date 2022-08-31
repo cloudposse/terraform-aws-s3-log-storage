@@ -37,6 +37,10 @@ module "s3_log_storage" {
   source_policy_documents           = var.s3_source_policy_documents
   sse_algorithm                     = "AES256"
   versioning_enabled                = true
+
+  s3_replication_enabled      = var.s3_replication_enabled
+  s3_replication_rules        = var.s3_replication_rules
+  s3_replication_source_roles = var.s3_replication_source_roles
 }
 
 resource "aws_s3_bucket_logging" "self" {

@@ -43,9 +43,9 @@ module "aws_s3_bucket" {
   restrict_public_buckets       = var.restrict_public_buckets
   s3_object_ownership           = var.s3_object_ownership
   s3_replica_bucket_arn         = ""
-  s3_replication_enabled        = false
-  s3_replication_rules          = null
-  s3_replication_source_roles   = []
+  s3_replication_enabled        = var.s3_replication_enabled
+  s3_replication_rules          = var.s3_replication_rules
+  s3_replication_source_roles   = var.s3_replication_source_roles
   source_policy_documents       = var.source_policy_documents
   sse_algorithm                 = var.sse_algorithm
   transfer_acceleration_enabled = false
