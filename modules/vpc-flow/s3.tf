@@ -101,7 +101,7 @@ module "s3_log_storage" {
   allow_ssl_requests_only           = true
   block_public_acls                 = true
   block_public_policy               = true
-  bucket_key_enabled                = false
+  bucket_key_enabled                = true
   bucket_name                       = ""
   bucket_notifications_enabled      = false
   bucket_notifications_prefix       = ""
