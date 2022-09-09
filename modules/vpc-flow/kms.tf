@@ -14,7 +14,7 @@ module "kms_key_context" {
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "kms_key" {
   count = module.kms_key_context.enabled ? 1 : 0
-
+  source_policy_documents = var.kms_key_policy_source_documents
   statement {
     sid    = "AwsRootAccess"
     effect = "Allow"
