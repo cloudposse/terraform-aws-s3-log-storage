@@ -25,7 +25,7 @@ module "aws_s3_bucket" {
   ]
   block_public_acls             = var.block_public_acls
   block_public_policy           = var.block_public_policy
-  bucket_key_enabled            = false
+  bucket_key_enabled            = var.bucket_key_enabled
   bucket_name                   = local.bucket_name
   cors_rule_inputs              = null
   force_destroy                 = var.force_destroy
