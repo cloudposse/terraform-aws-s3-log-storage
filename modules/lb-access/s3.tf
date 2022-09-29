@@ -121,4 +121,8 @@ module "s3_log_storage" {
   source_policy_documents           = concat([one(data.aws_iam_policy_document.s3_log_storage[*].json)],var.s3_source_policy_documents)
   sse_algorithm                     = module.kms_key.alias_arn == "" ? "AES256" : "aws:kms"
   versioning_enabled                = true
+
+  s3_replication_enabled      = var.s3_replication_enabled
+  s3_replication_rules        = var.s3_replication_rules
+  s3_replication_source_roles = var.s3_replication_source_roles
 }

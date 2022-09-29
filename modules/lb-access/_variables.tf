@@ -55,3 +55,21 @@ variable "source_accounts" {
   default = []
   description = "List of Account IDs allowed to write to this log bucket."
 }
+
+variable "s3_replication_enabled" {
+  type        = bool
+  default     = false
+  description = "Set this to true and specify `s3_replication_rules` to enable replication. `versioning_enabled` must also be `true`."
+}
+
+variable "s3_replication_rules" {
+  type        = list(any)
+  default     = null
+  description = "Specifies the replication rules for S3 bucket replication if enabled. You must also set s3_replication_enabled to true."
+}
+
+variable "s3_replication_source_roles" {
+  type        = list(string)
+  default     = []
+  description = "Cross-account IAM Role ARNs that will be allowed to perform S3 replication to this bucket (for replication within the same AWS account, it's not necessary to adjust the bucket policy)."
+}
