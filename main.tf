@@ -2,8 +2,8 @@
 # Terraform prior to 1.1 does not support a `moved` block.
 # Terraform 1.1 supports `moved` blocks in general, but does not a support
 # a move to an object declared in external module package.
-# Leaving this here for documentation and in case Terraform later supports it.
-/*
+# These `moved` blocks require Terraform 1.3.0 or later.
+
 moved {
   from = aws_s3_bucket.default
   to   = module.aws_s3_bucket.aws_s3_bucket.default
@@ -20,32 +20,13 @@ moved {
   from = aws_s3_bucket_public_access_block.default
   to   = module.aws_s3_bucket.aws_s3_bucket_public_access_block.default
 }
-*/
+moved {
+  from = time_sleep.wait_for_aws_s3_bucket_settings
+  to   = module.aws_s3_bucket.time_sleep.wait_for_aws_s3_bucket_settings
+}
 
 locals {
-  # This is a big hack to enable us to generate something close to a custom error message
-  force_destroy_error_message = <<-EOT
-
-    ** ERROR: You must set `force_destroy_enabled = true` to enable `force_destroy`. **n/
-    ** WARNING: Upgrading this module from a version prior to 0.27.0 to this version **n/
-    **  will cause Terraform to delete your existing S3 bucket CAUSING COMPLETE DATA LOSS **n/
-    **  unless you follow the upgrade instructions on the Wiki [here](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS)). **n/
-    **  See additional instructions for upgrading from v0.27.0 to v0.28.0 [here](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.28.0-and-AWS-provider-v4-(POTENTIAL-DATA-LOSS)). **n/
-
-    EOT
-  force_destroy_safety = {
-    true = {
-      true  = "true"
-      false = "false"
-    },
-    false = {
-      true  = local.force_destroy_error_message
-      false = "false"
-    }
-  }
-  # Generate an error message when `force_destroy == true && force_destroy_enabled == false`
-  force_destroy = tobool(local.force_destroy_safety[var.force_destroy_enabled][var.force_destroy])
-
+  # We do not use coalesce() here because it is OK if local.bucket_name is empty.
   bucket_name = var.bucket_name == null || var.bucket_name == "" ? module.this.id : var.bucket_name
 }
 
@@ -55,7 +36,7 @@ module "aws_s3_bucket" {
 
   bucket_name        = local.bucket_name
   acl                = var.acl
-  force_destroy      = local.force_destroy
+  force_destroy      = var.force_destroy
   versioning_enabled = var.versioning_enabled
 
   source_policy_documents = var.source_policy_documents
