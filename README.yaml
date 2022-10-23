@@ -48,52 +48,28 @@ related:
 description: |-
   This module creates an S3 bucket suitable for receiving logs from other `AWS` services such as `S3`, `CloudFront`, and `CloudTrails`.
 
-  **WARNING:** Changes introduced in version 0.27.0 present a **HIGH RISK OF DATA LOSS** when upgrading from an
-  earlier version. This warning does not apply to new deployments created with version 0.28.0 or later, but 
-  if upgrading from an earlier version, please follow the 
-  [upgrade instructions](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS))
-  in this repo's Wiki.
-  
   This module implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (_e.g._ `Glacier`) and ultimately expire the data altogether.
 
-  It enables server-side default encryption.
+  It enables [default server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-encryption.html).
 
-  https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html
-
-  It blocks public access to the bucket by default.
-
-  https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-block-public-access.html
+  It [blocks public access to the bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html) by default.
   
   As of March, 2022, this module is primarily a wrapper around our 
   [s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket)
   module, with some options preconfigured and SQS notifications added. If it does not exactly suit your needs,
   you may want to use the `s3-bucket` module directly.
+  
+  As of version 1.0 of this module, most of the inputs are marked `nullable = false`, 
+  meaning you can pass in `null` and get the default value rather than having the 
+  input be actually set to `null`. This is technically a breaking change from previous versions,
+  but since `null` was not a valid value for most of these variables, we are not considering it
+  a truly breaking change. However, be mindful that the behavior of inputs set to `null`
+  may change in the future, so we recommend setting them to the desired value explicitly.
 
 usage: |-
-  
-  **WARNING:** Changes introduced in version 0.27.0 present a **HIGH RISK OF DATA LOSS** when upgrading from an
-  earlier version. This warning does not apply to new deployments created with version 0.28.0 or later, but 
-  if upgrading from an earlier version, please follow the 
-  [upgrade instructions](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS))
-  in this repo's Wiki.
-  
-  
-  ```hcl
-  module "log_storage" {
-    source = "cloudposse/s3-log-storage/aws"
-    # Cloud Posse recommends pinning every module to a specific version
-    # version = "x.x.x"
-    name                     = "logs"
-    stage                    = "test"
-    namespace                = "eg"
-    acl                      = "log-delivery-write"
-    standard_transition_days = 30
-    glacier_transition_days  = 60
-    expiration_days          = 90
-  }
-  ```
-  
-  This module supports full S3 [storage lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html) configuration:
+
+  This module supports full S3 [storage lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html)
+  configuration via our [s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket) module:
 
   ```hcl
   locals {
@@ -131,10 +107,11 @@ usage: |-
     source = "cloudposse/s3-log-storage/aws"
     # Cloud Posse recommends pinning every module to a specific version
     # version = "x.x.x"
-    name                     = "logs"
-    stage                    = "test"
-    namespace                = "eg"
+    name      = "logs"
+    stage     = "test"
+    namespace = "eg"
     
+    versioning_enabled            = true
     lifecycle_configuration_rules = [var.lifecycle_configuration_rule]
   }
 
@@ -152,3 +129,5 @@ contributors:
   github: SweetOps
 - name: Gonzalo Peci
   github: pecigonzalo
+- name: Nuru
+  github: Nuru
