@@ -115,7 +115,7 @@ variable "access_log_bucket_prefix" {
   type        = string
   description = "Prefix to prepend to the current S3 bucket name, where S3 access logs will be sent to"
   default     = "logs/"
-  nullable    = true
+  nullable    = false
 }
 
 variable "allow_encrypted_uploads_only" {
