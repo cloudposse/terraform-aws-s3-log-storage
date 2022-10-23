@@ -2,75 +2,87 @@ variable "policy" {
   type        = string
   description = "(Deprecated, use `source_policy_documents` instead): A valid bucket policy JSON document."
   default     = ""
+  nullable    = false
 }
 
 variable "lifecycle_rule_enabled" {
   type        = bool
-  default     = true
   description = <<-EOF
     DEPRECATED: Defaults to `true`, **please set to `false`** and use `lifecycle_configuration_rules` instead.
     When `true`, configures lifecycle events on this bucket using individual (now deprecated) variables."
     EOF
+  default     = true
+  nullable    = false
 }
 
 variable "lifecycle_prefix" {
   type        = string
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nPrefix filter. Used to manage object lifecycle events"
   default     = ""
+  nullable    = false
 }
 
 variable "lifecycle_tags" {
   type        = map(string)
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nTags filter. Used to manage object lifecycle events"
   default     = {}
+  nullable    = false
 }
 
 variable "abort_incomplete_multipart_upload_days" {
   type        = number
-  default     = 5
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nMaximum time (in days) that you want to allow multipart uploads to remain in progress"
+  default     = 5
+  nullable    = false
 }
 
 variable "enable_glacier_transition" {
   type        = bool
-  default     = true
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nEnables the transition to AWS Glacier which can cause unnecessary costs for huge amount of small files"
+  default     = true
+  nullable    = false
 }
 
 variable "enable_noncurrent_version_expiration" {
   type        = bool
-  default     = true
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nEnable expiration of non-current versions"
+  default     = true
+  nullable    = false
 }
 
 variable "expiration_days" {
   type        = number
-  default     = 90
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nNumber of days after which to expunge the objects"
+  default     = 90
+  nullable    = false
 }
 
 variable "standard_transition_days" {
   type        = number
-  default     = 30
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nNumber of days to persist in the standard storage tier before moving to the infrequent access tier"
+  default     = 30
+  nullable    = false
 }
 
 variable "glacier_transition_days" {
   type        = number
-  default     = 60
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nNumber of days after which to move the data to the Glacier Flexible Retrieval storage tier"
+  default     = 60
+  nullable    = false
 }
 
 variable "noncurrent_version_transition_days" {
   type        = number
-  default     = 30
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nSpecifies (in days) when noncurrent object versions transition to Glacier Flexible Retrieval"
+  default     = 30
+  nullable    = false
 }
 
 variable "noncurrent_version_expiration_days" {
   type        = number
-  default     = 90
   description = "(Deprecated, use `lifecycle_configuration_rules` instead)\nSpecifies when non-current object versions expire (in days)"
+  default     = 90
+  nullable    = false
 }
 
 

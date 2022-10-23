@@ -1,6 +1,6 @@
 
 # Terraform prior to 1.1 does not support a `moved` block.
-# Terraform 1.1 supports `moved` blocks in general, but does not a support
+# Terraform 1.1 supports `moved` blocks in general, but does not support
 # a move to an object declared in external module package.
 # These `moved` blocks require Terraform 1.3.0 or later.
 
