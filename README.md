@@ -30,26 +30,23 @@
 
 This module creates an S3 bucket suitable for receiving logs from other `AWS` services such as `S3`, `CloudFront`, and `CloudTrails`.
 
-**WARNING:** Changes introduced in version 0.27.0 present a **HIGH RISK OF DATA LOSS** when upgrading from an
-earlier version. This warning does not apply to new deployments created with version 0.28.0 or later, but 
-if upgrading from an earlier version, please follow the 
-[upgrade instructions](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS))
-in this repo's Wiki.
-
 This module implements a configurable log retention policy, which allows you to efficiently manage logs across different storage classes (_e.g._ `Glacier`) and ultimately expire the data altogether.
 
-It enables server-side default encryption.
+It enables [default server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-encryption.html).
 
-https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html
-
-It blocks public access to the bucket by default.
-
-https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-block-public-access.html
+It [blocks public access to the bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html) by default.
 
 As of March, 2022, this module is primarily a wrapper around our 
 [s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket)
 module, with some options preconfigured and SQS notifications added. If it does not exactly suit your needs,
 you may want to use the `s3-bucket` module directly.
+
+As of version 1.0 of this module, most of the inputs are marked `nullable = false`, 
+meaning you can pass in `null` and get the default value rather than having the 
+input be actually set to `null`. This is technically a breaking change from previous versions,
+but since `null` was not a valid value for most of these variables, we are not considering it
+a truly breaking change. However, be mindful that the behavior of inputs set to `null`
+may change in the future, so we recommend setting them to the desired value explicitly.
 
 ---
 
@@ -115,29 +112,8 @@ The table below correctly indicates which inputs are required.
 
 
 
-**WARNING:** Changes introduced in version 0.27.0 present a **HIGH RISK OF DATA LOSS** when upgrading from an
-earlier version. This warning does not apply to new deployments created with version 0.28.0 or later, but 
-if upgrading from an earlier version, please follow the 
-[upgrade instructions](https://github.com/cloudposse/terraform-aws-s3-log-storage/wiki/Upgrading-to-v0.27.0-(POTENTIAL-DATA-LOSS))
-in this repo's Wiki.
-
-
-```hcl
-module "log_storage" {
-  source = "cloudposse/s3-log-storage/aws"
-  # Cloud Posse recommends pinning every module to a specific version
-  # version = "x.x.x"
-  name                     = "logs"
-  stage                    = "test"
-  namespace                = "eg"
-  acl                      = "log-delivery-write"
-  standard_transition_days = 30
-  glacier_transition_days  = 60
-  expiration_days          = 90
-}
-```
-
-This module supports full S3 [storage lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html) configuration:
+This module supports full S3 [storage lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html)
+configuration via our [s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket) module:
 
 ```hcl
 locals {
@@ -175,10 +151,11 @@ module "log_storage" {
   source = "cloudposse/s3-log-storage/aws"
   # Cloud Posse recommends pinning every module to a specific version
   # version = "x.x.x"
-  name                     = "logs"
-  stage                    = "test"
-  namespace                = "eg"
+  name      = "logs"
+  stage     = "test"
+  namespace = "eg"
   
+  versioning_enabled            = true
   lifecycle_configuration_rules = [var.lifecycle_configuration_rule]
 }
 
@@ -237,7 +214,7 @@ Available targets:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_abort_incomplete_multipart_upload_days"></a> [abort\_incomplete\_multipart\_upload\_days](#input\_abort\_incomplete\_multipart\_upload\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Maximum time (in days) that you want to allow multipart uploads to remain in progress | `number` | `5` | no |
+| <a name="input_abort_incomplete_multipart_upload_days"></a> [abort\_incomplete\_multipart\_upload\_days](#input\_abort\_incomplete\_multipart\_upload\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Maximum time (in days) that you want to allow multipart uploads to remain in progress | `number` | `null` | no |
 | <a name="input_access_log_bucket_name"></a> [access\_log\_bucket\_name](#input\_access\_log\_bucket\_name) | Name of the S3 bucket where S3 access logs will be sent to | `string` | `""` | no |
 | <a name="input_access_log_bucket_prefix"></a> [access\_log\_bucket\_prefix](#input\_access\_log\_bucket\_prefix) | Prefix to prepend to the current S3 bucket name, where S3 access logs will be sent to | `string` | `"logs/"` | no |
 | <a name="input_acl"></a> [acl](#input\_acl) | The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services | `string` | `"log-delivery-write"` | no |
@@ -255,13 +232,13 @@ Available targets:
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between ID elements.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | <a name="input_descriptor_formats"></a> [descriptor\_formats](#input\_descriptor\_formats) | Describe additional descriptors to be output in the `descriptors` output map.<br>Map of maps. Keys are names of descriptors. Values are maps of the form<br>`{<br>   format = string<br>   labels = list(string)<br>}`<br>(Type is `any` so the map values can later be enhanced to provide additional options.)<br>`format` is a Terraform format string to be passed to the `format()` function.<br>`labels` is a list of labels, in order, to pass to `format()` function.<br>Label values will be normalized before being passed to `format()` so they will be<br>identical to how they appear in `id`.<br>Default is `{}` (`descriptors` output will be empty). | `any` | `{}` | no |
-| <a name="input_enable_glacier_transition"></a> [enable\_glacier\_transition](#input\_enable\_glacier\_transition) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Enables the transition to AWS Glacier which can cause unnecessary costs for huge amount of small files | `bool` | `true` | no |
-| <a name="input_enable_noncurrent_version_expiration"></a> [enable\_noncurrent\_version\_expiration](#input\_enable\_noncurrent\_version\_expiration) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Enable expiration of non-current versions | `bool` | `true` | no |
+| <a name="input_enable_glacier_transition"></a> [enable\_glacier\_transition](#input\_enable\_glacier\_transition) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Enables the transition to AWS Glacier which can cause unnecessary costs for huge amount of small files | `bool` | `null` | no |
+| <a name="input_enable_noncurrent_version_expiration"></a> [enable\_noncurrent\_version\_expiration](#input\_enable\_noncurrent\_version\_expiration) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Enable expiration of non-current versions | `bool` | `null` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
-| <a name="input_expiration_days"></a> [expiration\_days](#input\_expiration\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Number of days after which to expunge the objects | `number` | `90` | no |
+| <a name="input_expiration_days"></a> [expiration\_days](#input\_expiration\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Number of days after which to expunge the objects | `number` | `null` | no |
 | <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | When `true`, permits a non-empty S3 bucket to be deleted by first deleting all objects in the bucket.<br>THESE OBJECTS ARE NOT RECOVERABLE even if they were versioned and stored in Glacier.<br>Must be set `false` unless `force_destroy_enabled` is also `true`. | `bool` | `false` | no |
-| <a name="input_glacier_transition_days"></a> [glacier\_transition\_days](#input\_glacier\_transition\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Number of days after which to move the data to the Glacier Flexible Retrieval storage tier | `number` | `60` | no |
+| <a name="input_glacier_transition_days"></a> [glacier\_transition\_days](#input\_glacier\_transition\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Number of days after which to move the data to the Glacier Flexible Retrieval storage tier | `number` | `null` | no |
 | <a name="input_id_length_limit"></a> [id\_length\_limit](#input\_id\_length\_limit) | Limit `id` to this many characters (minimum 6).<br>Set to `0` for unlimited length.<br>Set to `null` for keep the existing setting, which defaults to `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
 | <a name="input_ignore_public_acls"></a> [ignore\_public\_acls](#input\_ignore\_public\_acls) | Set to `false` to disable the ignoring of public access lists on the bucket | `bool` | `true` | no |
 | <a name="input_kms_master_key_arn"></a> [kms\_master\_key\_arn](#input\_kms\_master\_key\_arn) | The AWS KMS master key ARN used for the SSE-KMS encryption. This can only be used when you set the value of sse\_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse\_algorithm is aws:kms | `string` | `""` | no |
@@ -270,21 +247,21 @@ Available targets:
 | <a name="input_label_value_case"></a> [label\_value\_case](#input\_label\_value\_case) | Controls the letter case of ID elements (labels) as included in `id`,<br>set as tag values, and output by this module individually.<br>Does not affect values of tags passed in via the `tags` input.<br>Possible values: `lower`, `title`, `upper` and `none` (no transformation).<br>Set this to `title` and set `delimiter` to `""` to yield Pascal Case IDs.<br>Default value: `lower`. | `string` | `null` | no |
 | <a name="input_labels_as_tags"></a> [labels\_as\_tags](#input\_labels\_as\_tags) | Set of labels (ID elements) to include as tags in the `tags` output.<br>Default is to include all labels.<br>Tags with empty values will not be included in the `tags` output.<br>Set to `[]` to suppress all generated tags.<br>**Notes:**<br>  The value of the `name` tag, if included, will be the `id`, not the `name`.<br>  Unlike other `null-label` inputs, the initial setting of `labels_as_tags` cannot be<br>  changed in later chained modules. Attempts to change it will be silently ignored. | `set(string)` | <pre>[<br>  "default"<br>]</pre> | no |
 | <a name="input_lifecycle_configuration_rules"></a> [lifecycle\_configuration\_rules](#input\_lifecycle\_configuration\_rules) | A list of S3 bucket v2 lifecycle rules, as specified in [terraform-aws-s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket)"<br>These rules are not affected by the deprecated `lifecycle_rule_enabled` flag.<br>**NOTE:** Unless you also set `lifecycle_rule_enabled = false` you will also get the default deprecated rules set on your bucket. | <pre>list(object({<br>    enabled = bool<br>    id      = string<br><br>    abort_incomplete_multipart_upload_days = number<br><br>    # `filter_and` is the `and` configuration block inside the `filter` configuration.<br>    # This is the only place you should specify a prefix.<br>    filter_and = any<br>    expiration = any<br>    transition = list(any)<br><br>    noncurrent_version_expiration = any<br>    noncurrent_version_transition = list(any)<br>  }))</pre> | `[]` | no |
-| <a name="input_lifecycle_prefix"></a> [lifecycle\_prefix](#input\_lifecycle\_prefix) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Prefix filter. Used to manage object lifecycle events | `string` | `""` | no |
-| <a name="input_lifecycle_rule_enabled"></a> [lifecycle\_rule\_enabled](#input\_lifecycle\_rule\_enabled) | DEPRECATED: Defaults to `true`, **please set to `false`** and use `lifecycle_configuration_rules` instead.<br>When `true`, configures lifecycle events on this bucket using individual (now deprecated) variables." | `bool` | `true` | no |
-| <a name="input_lifecycle_tags"></a> [lifecycle\_tags](#input\_lifecycle\_tags) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Tags filter. Used to manage object lifecycle events | `map(string)` | `{}` | no |
+| <a name="input_lifecycle_prefix"></a> [lifecycle\_prefix](#input\_lifecycle\_prefix) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Prefix filter. Used to manage object lifecycle events | `string` | `null` | no |
+| <a name="input_lifecycle_rule_enabled"></a> [lifecycle\_rule\_enabled](#input\_lifecycle\_rule\_enabled) | DEPRECATED: Use `lifecycle_configuration_rules` instead.<br>When `true`, configures lifecycle events on this bucket using individual (now deprecated) variables.<br>When `false`, lifecycle events are not configured using individual (now deprecated) variables, but `lifecycle_configuration_rules` still apply.<br>When `null`, lifecycle events are configured using individual (now deprecated) variables only if `lifecycle_configuration_rules` is empty. | `bool` | `null` | no |
+| <a name="input_lifecycle_tags"></a> [lifecycle\_tags](#input\_lifecycle\_tags) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Tags filter. Used to manage object lifecycle events | `map(string)` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | ID element. Usually the component or solution name, e.g. 'app' or 'jenkins'.<br>This is the only ID element not also included as a `tag`.<br>The "name" tag is set to the full `id` string. There is no tag with the value of the `name` input. | `string` | `null` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique | `string` | `null` | no |
-| <a name="input_noncurrent_version_expiration_days"></a> [noncurrent\_version\_expiration\_days](#input\_noncurrent\_version\_expiration\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Specifies when non-current object versions expire (in days) | `number` | `90` | no |
-| <a name="input_noncurrent_version_transition_days"></a> [noncurrent\_version\_transition\_days](#input\_noncurrent\_version\_transition\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Specifies (in days) when noncurrent object versions transition to Glacier Flexible Retrieval | `number` | `30` | no |
-| <a name="input_policy"></a> [policy](#input\_policy) | (Deprecated, use `source_policy_documents` instead): A valid bucket policy JSON document. | `string` | `""` | no |
+| <a name="input_noncurrent_version_expiration_days"></a> [noncurrent\_version\_expiration\_days](#input\_noncurrent\_version\_expiration\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Specifies when non-current object versions expire (in days) | `number` | `null` | no |
+| <a name="input_noncurrent_version_transition_days"></a> [noncurrent\_version\_transition\_days](#input\_noncurrent\_version\_transition\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Specifies (in days) when noncurrent object versions transition to Glacier Flexible Retrieval | `number` | `null` | no |
+| <a name="input_policy"></a> [policy](#input\_policy) | (Deprecated, use `source_policy_documents` instead): A valid bucket policy JSON document. | `string` | `null` | no |
 | <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Terraform regular expression (regex) string.<br>Characters matching the regex will be removed from the ID elements.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | <a name="input_restrict_public_buckets"></a> [restrict\_public\_buckets](#input\_restrict\_public\_buckets) | Set to `false` to disable the restricting of making the bucket public | `bool` | `true` | no |
 | <a name="input_s3_object_ownership"></a> [s3\_object\_ownership](#input\_s3\_object\_ownership) | Specifies the S3 object ownership control. Valid values are `ObjectWriter`, `BucketOwnerPreferred`, and 'BucketOwnerEnforced'. | `string` | `"BucketOwnerPreferred"` | no |
 | <a name="input_source_policy_documents"></a> [source\_policy\_documents](#input\_source\_policy\_documents) | List of IAM policy documents that are merged together into the exported document.<br>Statements defined in source\_policy\_documents must have unique SIDs.<br>Statement having SIDs that match policy SIDs generated by this module will override them. | `list(string)` | `[]` | no |
 | <a name="input_sse_algorithm"></a> [sse\_algorithm](#input\_sse\_algorithm) | The server-side encryption algorithm to use. Valid values are AES256 and aws:kms | `string` | `"AES256"` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
-| <a name="input_standard_transition_days"></a> [standard\_transition\_days](#input\_standard\_transition\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Number of days to persist in the standard storage tier before moving to the infrequent access tier | `number` | `30` | no |
+| <a name="input_standard_transition_days"></a> [standard\_transition\_days](#input\_standard\_transition\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br>Number of days to persist in the standard storage tier before moving to the infrequent access tier | `number` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`).<br>Neither the tag keys nor the tag values will be modified by this module. | `map(string)` | `{}` | no |
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | ID element \_(Rarely used, not included by default)\_. A customer identifier, indicating who this instance of a resource is for | `string` | `null` | no |
 | <a name="input_versioning_enabled"></a> [versioning\_enabled](#input\_versioning\_enabled) | Enable object versioning, keeping multiple variants of an object in the same bucket | `bool` | `true` | no |
@@ -451,8 +428,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 ### Contributors
 
 <!-- markdownlint-disable -->
-|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Vladimir][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir][SweetOps_homepage] | [![Gonzalo Peci][pecigonzalo_avatar]][pecigonzalo_homepage]<br/>[Gonzalo Peci][pecigonzalo_homepage] |
-|---|---|---|---|
+|  [![Erik Osterman][osterman_avatar]][osterman_homepage]<br/>[Erik Osterman][osterman_homepage] | [![Andriy Knysh][aknysh_avatar]][aknysh_homepage]<br/>[Andriy Knysh][aknysh_homepage] | [![Vladimir][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir][SweetOps_homepage] | [![Gonzalo Peci][pecigonzalo_avatar]][pecigonzalo_homepage]<br/>[Gonzalo Peci][pecigonzalo_homepage] | [![Nuru][Nuru_avatar]][Nuru_homepage]<br/>[Nuru][Nuru_homepage] |
+|---|---|---|---|---|
 <!-- markdownlint-restore -->
 
   [osterman_homepage]: https://github.com/osterman
@@ -463,6 +440,8 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [SweetOps_avatar]: https://img.cloudposse.com/150x150/https://github.com/SweetOps.png
   [pecigonzalo_homepage]: https://github.com/pecigonzalo
   [pecigonzalo_avatar]: https://img.cloudposse.com/150x150/https://github.com/pecigonzalo.png
+  [Nuru_homepage]: https://github.com/Nuru
+  [Nuru_avatar]: https://img.cloudposse.com/150x150/https://github.com/Nuru.png
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
