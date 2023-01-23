@@ -3,58 +3,7 @@ resource "aws_s3_bucket" "default" {
   #bridgecrew:skip=CKV_AWS_52:Skipping `Ensure S3 bucket has MFA delete enabled` due to issue in terraform (https://github.com/hashicorp/terraform-provider-aws/issues/629).
   count         = module.this.enabled ? 1 : 0
   bucket        = module.this.id
-  acl           = var.acl
   force_destroy = var.force_destroy
-  policy        = var.policy
-
-  versioning {
-    enabled    = var.versioning_enabled
-    mfa_delete = var.versioning_mfa_delete_enabled
-  }
-
-  // MFA Enabled is not compatable with lifecycle management - https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-and-other-bucket-config.html
-  dynamic "lifecycle_rule" {
-    for_each = var.versioning_mfa_delete_enabled ? [] : [1]
-    content {
-      id                                     = module.this.id
-      enabled                                = var.lifecycle_rule_enabled
-      prefix                                 = var.lifecycle_prefix
-      tags                                   = var.lifecycle_tags
-      abort_incomplete_multipart_upload_days = var.abort_incomplete_multipart_upload_days
-
-      noncurrent_version_expiration {
-        days = var.noncurrent_version_expiration_days
-      }
-
-      dynamic "noncurrent_version_transition" {
-        for_each = var.enable_glacier_transition ? [1] : []
-
-        content {
-          days          = var.noncurrent_version_transition_days
-          storage_class = "GLACIER"
-        }
-      }
-
-      transition {
-        days          = var.standard_transition_days
-        storage_class = "STANDARD_IA"
-      }
-
-      dynamic "transition" {
-        for_each = var.enable_glacier_transition ? [1] : []
-
-        content {
-          days          = var.glacier_transition_days
-          storage_class = "GLACIER"
-        }
-      }
-
-      expiration {
-        days = var.expiration_days
-      }
-
-    }
-  }
 
   dynamic "logging" {
     for_each = var.access_log_bucket_name != "" ? [1] : []
@@ -64,19 +13,109 @@ resource "aws_s3_bucket" "default" {
     }
   }
 
-  # https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html
-  # https://www.terraform.io/docs/providers/aws/r/s3_bucket.html#enable-default-server-side-encryption
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm     = var.sse_algorithm
-        kms_master_key_id = var.kms_master_key_arn
-      }
-    }
-  }
-
   tags = module.this.tags
 }
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
+  count  = module.this.enabled ? 1 : 0
+  bucket = one(aws_s3_bucket.default).bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = var.kms_master_key_arn
+      sse_algorithm     = var.sse_algorithm
+    }
+  }
+}
+
+# requires manual import https://github.com/hashicorp/terraform/issues/30527#issuecomment-1041916793
+resource "aws_s3_bucket_lifecycle_configuration" "default" {
+  count  = module.this.enabled ? 1 : 0
+  bucket = one(aws_s3_bucket.default).bucket
+
+  // MFA Enabled is not compatable with lifecycle management - https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-and-other-bucket-config.html
+  rule {
+    id = module.this.id
+
+    status = var.lifecycle_rule_enabled ? "Enabled" : "Disabled"
+
+    # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration#prefix
+    # prefix = var.lifecycle_prefix
+
+    # tags    = var.lifecycle_tags
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = var.abort_incomplete_multipart_upload_days
+    }
+
+    dynamic "filter" {
+      for_each = length(keys(var.lifecycle_tags)) > 0 || coalesce(var.lifecycle_prefix, false) ? [1] : []
+      content {
+        and {
+          tags   = var.lifecycle_tags
+          prefix = coalesce(var.lifecycle_prefix, null)
+        }
+      }
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = var.noncurrent_version_expiration_days
+    }
+
+    dynamic "noncurrent_version_transition" {
+      for_each = var.enable_glacier_transition ? [1] : []
+
+      content {
+        noncurrent_days = var.noncurrent_version_transition_days
+        storage_class   = "GLACIER"
+      }
+    }
+
+    transition {
+      days          = var.standard_transition_days
+      storage_class = "STANDARD_IA"
+    }
+
+    dynamic "transition" {
+      for_each = var.enable_glacier_transition ? [1] : []
+
+      content {
+        days          = var.glacier_transition_days
+        storage_class = "GLACIER"
+      }
+    }
+
+    expiration {
+      days = var.expiration_days
+    }
+
+  }
+}
+
+resource "aws_s3_bucket_versioning" "default" {
+  count  = module.this.enabled ? 1 : 0
+  bucket = one(aws_s3_bucket.default).bucket
+
+  versioning_configuration {
+    status     = var.versioning_enabled ? "Enabled" : "Disabled"
+    mfa_delete = var.versioning_mfa_delete_enabled ? "Enabled" : "Disabled"
+  }
+}
+
+resource "aws_s3_bucket_acl" "default" {
+  count  = module.this.enabled ? 1 : 0
+  bucket = one(aws_s3_bucket.default).bucket
+
+  acl = var.acl
+}
+
+resource "aws_s3_bucket_policy" "default_policy" {
+  count  = module.this.enabled ? 1 : 0
+  bucket = one(aws_s3_bucket.default).bucket
+
+  policy = var.policy
+}
+
 
 data "aws_iam_policy_document" "bucket_policy" {
   count = module.this.enabled ? 1 : 0
@@ -154,9 +193,9 @@ data "aws_iam_policy_document" "bucket_policy" {
 data "aws_partition" "current" {}
 
 data "aws_iam_policy_document" "aggregated_policy" {
-  count         = module.this.enabled ? 1 : 0
-  source_json   = var.policy
-  override_json = join("", data.aws_iam_policy_document.bucket_policy.*.json)
+  count                     = module.this.enabled ? 1 : 0
+  source_policy_documents   = [var.policy]
+  override_policy_documents = data.aws_iam_policy_document.bucket_policy.*.json
 }
 
 resource "aws_s3_bucket_policy" "default" {
