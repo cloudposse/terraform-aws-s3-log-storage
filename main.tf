@@ -40,5 +40,7 @@ module "aws_s3_bucket" {
 
   s3_object_ownership = var.s3_object_ownership
 
+  object_lock_configuration = var.object_lock_configuration
+
   context = module.this.context
 }

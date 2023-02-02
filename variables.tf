@@ -8,6 +8,16 @@ variable "bucket_name" {
   nullable    = false
 }
 
+variable "object_lock_configuration" {
+  type = object({
+    mode  = string # Valid values are GOVERNANCE and COMPLIANCE.
+    days  = number
+    years = number
+  })
+  default     = null
+  description = "A configuration for S3 object locking. With S3 Object Lock, you can store objects using a `write once, read many` (WORM) model. Object Lock can help prevent objects from being deleted or overwritten for a fixed amount of time or indefinitely."
+}
+
 variable "acl" {
   type        = string
   description = "The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"
