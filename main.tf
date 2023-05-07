@@ -1,7 +1,19 @@
 locals {
   # We do not use coalesce() here because it is OK if local.bucket_name is empty.
-  bucket_name = var.bucket_name == null || var.bucket_name == "" ? module.this.id : var.bucket_name
+  bucket_name = var.bucket_name == null || var.bucket_name == "" ? module.bucket_name.id : var.bucket_name
 }
+
+module "bucket_name" {
+  source  = "cloudposse/label/null"
+  version = "0.25.0"
+
+  enabled = local.enabled && try(length(var.bucket_name) == 0, false)
+
+  id_length_limit = 63 # https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
+
+  context = module.this.context
+}
+
 
 module "aws_s3_bucket" {
   source  = "cloudposse/s3-bucket/aws"
