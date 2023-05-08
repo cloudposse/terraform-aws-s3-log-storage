@@ -15,9 +15,12 @@ lifecycle_configuration_rules = [
 
     abort_incomplete_multipart_upload_days = 1 # number
 
-    filter_and = null
-    expiration = null
-    transition = null
+    #    filter_and = null
+    #    expiration = null
+    #    transition = null
+    filter_and = {
+      prefix = "prefix/"
+    }
     noncurrent_version_expiration = {
       newer_noncurrent_versions = 3  # integer > 0
       noncurrent_days           = 90 # integer >= 0
@@ -27,5 +30,13 @@ lifecycle_configuration_rules = [
       noncurrent_days           = 30           # integer >= 0
       storage_class             = "ONEZONE_IA" # string/enum, one of GLACIER, STANDARD_IA, ONEZONE_IA, INTELLIGENT_TIERING, DEEP_ARCHIVE, GLACIER_IR.
     }]
+  },
+  {
+    enabled = true
+    id      = "cleanup-delete-markers"
+    expiration = {
+      expired_object_delete_marker = true
+    }
+    abort_incomplete_multipart_upload_days = 1
   }
 ]
