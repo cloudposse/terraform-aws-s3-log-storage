@@ -20,8 +20,29 @@ variable "object_lock_configuration" {
 
 variable "acl" {
   type        = string
-  description = "The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"
+  description = <<-EOT
+    The [canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply.
+    Deprecated by AWS in favor of bucket policies.
+    Automatically disabled if `s3_object_ownership` is set to "BucketOwnerEnforced".
+    Defaults to "private" for backwards compatibility, but we recommend setting `s3_object_ownership` to "BucketOwnerEnforced" instead.
+    EOT
   default     = "log-delivery-write"
+}
+
+variable "grants" {
+  type = list(object({
+    id          = string
+    type        = string
+    permissions = list(string)
+    uri         = string
+  }))
+  description = <<-EOT
+    A list of policy grants for the bucket, taking a list of permissions.
+    Conflicts with `acl`. Set `acl` to `null` to use this.
+    Deprecated by AWS in favor of bucket policies, but still required for some log delivery services.
+    Automatically disabled if `s3_object_ownership` is set to "BucketOwnerEnforced".
+    EOT
+  default     = []
   nullable    = false
 }
 

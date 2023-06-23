@@ -19,7 +19,7 @@ output "prefix" {
 }
 
 output "bucket_notifications_sqs_queue_arn" {
-  value       = join("", aws_sqs_queue.notifications.*.arn)
+  value       = join("", aws_sqs_queue.notifications[*].arn)
   description = "Notifications SQS queue ARN"
 }
 

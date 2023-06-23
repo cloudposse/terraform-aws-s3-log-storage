@@ -21,6 +21,7 @@ module "aws_s3_bucket" {
 
   bucket_name        = local.bucket_name
   acl                = var.acl
+  grants             = var.grants
   force_destroy      = var.force_destroy
   versioning_enabled = var.versioning_enabled
 
