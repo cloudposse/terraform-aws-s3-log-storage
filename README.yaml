@@ -1,50 +1,52 @@
 name: terraform-aws-s3-log-storage
 tags:
-- aws
-- terraform
-- terraform-modules
-- logging
-- s3
-- bucket
-- logs
-- storage
-- glacier
-- standard
-- lifecycle-management
-- versioning
+  - aws
+  - terraform
+  - terraform-modules
+  - logging
+  - s3
+  - bucket
+  - logs
+  - storage
+  - glacier
+  - standard
+  - lifecycle-management
+  - versioning
 categories:
-- terraform-modules/logging
+  - terraform-modules/logging
 license: APACHE2
 github_repo: cloudposse/terraform-aws-s3-log-storage
 badges:
-- name: Latest Release
-  image: https://img.shields.io/github/release/cloudposse/terraform-aws-s3-log-storage.svg
-  url: https://github.com/cloudposse/terraform-aws-s3-log-storage/releases/latest
-- name: Slack Community
-  image: https://slack.cloudposse.com/badge.svg
-  url: https://slack.cloudposse.com
+  - name: Latest Release
+    image: https://img.shields.io/github/release/cloudposse/terraform-aws-s3-log-storage.svg?style=for-the-badge
+    url: https://github.com/cloudposse/terraform-aws-s3-log-storage/releases/latest
+  - name: Last Updated
+    image: https://img.shields.io/github/last-commit/cloudposse/terraform-aws-s3-log-storage.svg?style=for-the-badge
+    url: https://github.com/cloudposse/terraform-aws-s3-log-storage/commits
+  - name: Slack Community
+    image: https://slack.cloudposse.com/for-the-badge.svg
+    url: https://slack.cloudposse.com
+
+# List any related terraform modules that this module may be used with or that this module depends on.
 related:
-- name: terraform-aws-s3-bucket
-  description:  Terraform module that creates an S3 bucket with an optional IAM user for external CI/CD systems
-  url: https://github.com/cloudposse/terraform-aws-s3-bucket
-- name: terraform-aws-cloudfront-s3-cdn
-  description: Terraform module to easily provision CloudFront CDN backed by an S3
-    origin
-  url: https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn
-- name: terraform-aws-s3-website
-  description: Terraform Module for Creating S3 backed Websites and Route53 DNS
-  url: https://github.com/cloudposse/terraform-aws-s3-website
-- name: terraform-aws-user-data-s3-backend
-  description: Terraform Module to Offload User Data to S3
-  url: https://github.com/cloudposse/terraform-aws-user-data-s3-backend
-- name: terraform-aws-s3-logs-athena-query
-  description: A Terraform module that creates an Athena Database and Structure for
-    querying S3 access logs
-  url: https://github.com/cloudposse/terraform-aws-s3-logs-athena-query
-- name: terraform-aws-lb-s3-bucket
-  description: Terraform module to provision an S3 bucket with built in IAM policy
-    to allow AWS Load Balancers to ship access logs
-  url: https://github.com/cloudposse/terraform-aws-lb-s3-bucket
+  - name: terraform-aws-s3-bucket
+    description: Terraform module that creates an S3 bucket with an optional IAM user for external CI/CD systems
+    url: https://github.com/cloudposse/terraform-aws-s3-bucket
+  - name: terraform-aws-cloudfront-s3-cdn
+    description: Terraform module to easily provision CloudFront CDN backed by an S3 origin
+    url: https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn
+  - name: terraform-aws-s3-website
+    description: Terraform Module for Creating S3 backed Websites and Route53 DNS
+    url: https://github.com/cloudposse/terraform-aws-s3-website
+  - name: terraform-aws-user-data-s3-backend
+    description: Terraform Module to Offload User Data to S3
+    url: https://github.com/cloudposse/terraform-aws-user-data-s3-backend
+  - name: terraform-aws-s3-logs-athena-query
+    description: A Terraform module that creates an Athena Database and Structure for querying S3 access logs
+    url: https://github.com/cloudposse/terraform-aws-s3-logs-athena-query
+  - name: terraform-aws-lb-s3-bucket
+    description: Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs
+    url: https://github.com/cloudposse/terraform-aws-lb-s3-bucket
 description: |-
   This module creates an S3 bucket suitable for receiving logs from other `AWS` services such as `S3`, `CloudFront`, and `CloudTrails`.
 
@@ -53,12 +55,12 @@ description: |-
   It enables [default server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-encryption.html).
 
   It [blocks public access to the bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html) by default.
-  
+
   As of March, 2022, this module is primarily a wrapper around our 
   [s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket)
   module, with some options preconfigured and SQS notifications added. If it does not exactly suit your needs,
   you may want to use the `s3-bucket` module directly.
-  
+
   As of version 1.0 of this module, most of the inputs are marked `nullable = false`, 
   meaning you can pass in `null` and get the default value rather than having the 
   input be actually set to `null`. This is technically a breaking change from previous versions,
@@ -66,7 +68,7 @@ description: |-
   a truly breaking change. However, be mindful that the behavior of inputs set to `null`
   may change in the future, so we recommend setting them to the desired value explicitly.
 
-usage: |-
+usage: |2-
 
   This module supports full S3 [storage lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html)
   configuration via our [s3-bucket](https://github.com/cloudposse/terraform-aws-s3-bucket) module:
@@ -102,7 +104,7 @@ usage: |-
       }]
     }
   }
-  
+
   module "log_storage" {
     source = "cloudposse/s3-log-storage/aws"
     # Cloud Posse recommends pinning every module to a specific version
@@ -118,16 +120,6 @@ usage: |-
   ```
 
 include:
-- docs/targets.md
-- docs/terraform.md
-contributors:
-- name: Erik Osterman
-  github: osterman
-- name: Andriy Knysh
-  github: aknysh
-- name: Vladimir
-  github: SweetOps
-- name: Gonzalo Peci
-  github: pecigonzalo
-- name: Nuru
-  github: Nuru
+  - docs/targets.md
+  - docs/terraform.md
+contributors: []
