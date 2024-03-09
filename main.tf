@@ -51,7 +51,7 @@ locals {
 
 module "aws_s3_bucket" {
   source  = "cloudposse/s3-bucket/aws"
-  version = "3.0.0"
+  version = "3.1.3"
 
   bucket_name        = local.bucket_name
   acl                = var.acl
