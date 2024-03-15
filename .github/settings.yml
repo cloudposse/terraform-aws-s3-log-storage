@@ -1,0 +1,7 @@
+# Upstream changes from _extends are only recognized when modifications are made to this file in the default branch.
+_extends: .github
+repository:
+  name: terraform-aws-s3-log-storage
+  description: This module creates an S3 bucket suitable for receiving logs from other AWS services such as S3, CloudFront, and CloudTrail
+  homepage: https://cloudposse.com/accelerate
+  topics: aws, terraform, terraform-modules, s3, bucket, logs, storage, glacier, standard, lifecycle-management, versioning, hcl2
