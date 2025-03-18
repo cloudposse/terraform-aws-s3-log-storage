@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "sqs_policy" {
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = module.aws_s3_bucket.bucket_arn
+      values   = [join("", module.aws_s3_bucket.bucket_arn)]
     }
     condition {
       test     = "StringEquals"
