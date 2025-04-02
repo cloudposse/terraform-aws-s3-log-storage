@@ -1,5 +1,6 @@
 variable "region" {
-  type = string
+  type        = string
+  description = "AWS region"
 }
 
 variable "allow_ssl_requests_only" {
