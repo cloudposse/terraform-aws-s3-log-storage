@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "sqs_policy" {
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [join("", module.aws_s3_bucket.bucket_arn)]
+      values   = [module.aws_s3_bucket.bucket_arn]
     }
     condition {
       test     = "StringEquals"
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "sqs_policy" {
 
 resource "aws_s3_bucket_notification" "bucket_notification" {
   count  = local.sqs_notifications_enabled ? 1 : 0
-  bucket = join("", module.aws_s3_bucket.bucket_id)
+  bucket = module.aws_s3_bucket.bucket_id
 
   queue {
     queue_arn = join("", aws_sqs_queue.notifications[*].arn)
