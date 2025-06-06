@@ -1,9 +1,3 @@
-variable "policy" {
-  type        = string
-  description = "(Deprecated, use `source_policy_documents` instead): A valid bucket policy JSON document."
-  default     = null
-}
-
 variable "lifecycle_rule_enabled" {
   type        = bool
   description = <<-EOF
