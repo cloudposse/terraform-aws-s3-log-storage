@@ -17,7 +17,7 @@ module "bucket_name" {
 
 module "aws_s3_bucket" {
   source  = "cloudposse/s3-bucket/aws"
-  version = "3.1.3"
+  version = "4.10.0"
 
   bucket_name        = local.bucket_name
   acl                = var.acl
@@ -26,18 +26,16 @@ module "aws_s3_bucket" {
   versioning_enabled = var.versioning_enabled
 
   source_policy_documents = var.source_policy_documents
-  # Support deprecated `policy` input
-  policy = var.policy
 
   lifecycle_configuration_rules = var.lifecycle_configuration_rules
   # Support deprecated lifecycle inputs
   lifecycle_rule_ids = local.deprecated_lifecycle_rule.enabled ? [module.this.id] : null
   lifecycle_rules    = local.deprecated_lifecycle_rule.enabled ? [local.deprecated_lifecycle_rule] : null
 
-  logging = var.access_log_bucket_name == "" ? null : {
+  logging = var.access_log_bucket_name == "" ? null : [{
     bucket_name = var.access_log_bucket_name
     prefix      = "${var.access_log_bucket_prefix}${local.bucket_name}/"
-  }
+  }]
 
   sse_algorithm      = var.sse_algorithm
   kms_master_key_arn = var.kms_master_key_arn
