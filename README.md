@@ -150,7 +150,7 @@ module "log_storage" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aws_s3_bucket"></a> [aws\_s3\_bucket](#module\_aws\_s3\_bucket) | cloudposse/s3-bucket/aws | 3.1.3 |
+| <a name="module_aws_s3_bucket"></a> [aws\_s3\_bucket](#module\_aws\_s3\_bucket) | cloudposse/s3-bucket/aws | 4.10.0 |
 | <a name="module_bucket_name"></a> [bucket\_name](#module\_bucket\_name) | cloudposse/label/null | 0.25.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 
@@ -210,7 +210,6 @@ module "log_storage" {
 | <a name="input_noncurrent_version_expiration_days"></a> [noncurrent\_version\_expiration\_days](#input\_noncurrent\_version\_expiration\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br/>Specifies when non-current object versions expire (in days) | `number` | `null` | no |
 | <a name="input_noncurrent_version_transition_days"></a> [noncurrent\_version\_transition\_days](#input\_noncurrent\_version\_transition\_days) | (Deprecated, use `lifecycle_configuration_rules` instead)<br/>Specifies (in days) when noncurrent object versions transition to Glacier Flexible Retrieval | `number` | `null` | no |
 | <a name="input_object_lock_configuration"></a> [object\_lock\_configuration](#input\_object\_lock\_configuration) | A configuration for S3 object locking. With S3 Object Lock, you can store objects using a `write once, read many` (WORM) model. Object Lock can help prevent objects from being deleted or overwritten for a fixed amount of time or indefinitely. | <pre>object({<br/>    mode  = string # Valid values are GOVERNANCE and COMPLIANCE.<br/>    days  = number<br/>    years = number<br/>  })</pre> | `null` | no |
-| <a name="input_policy"></a> [policy](#input\_policy) | (Deprecated, use `source_policy_documents` instead): A valid bucket policy JSON document. | `string` | `null` | no |
 | <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Terraform regular expression (regex) string.<br/>Characters matching the regex will be removed from the ID elements.<br/>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | <a name="input_restrict_public_buckets"></a> [restrict\_public\_buckets](#input\_restrict\_public\_buckets) | Set to `false` to disable the restricting of making the bucket public | `bool` | `true` | no |
 | <a name="input_s3_object_ownership"></a> [s3\_object\_ownership](#input\_s3\_object\_ownership) | Specifies the S3 object ownership control. Valid values are `ObjectWriter`, `BucketOwnerPreferred`, and 'BucketOwnerEnforced'. | `string` | `"BucketOwnerPreferred"` | no |
