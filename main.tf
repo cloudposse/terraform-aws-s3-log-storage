@@ -17,7 +17,7 @@ module "bucket_name" {
 
 module "aws_s3_bucket" {
   source  = "cloudposse/s3-bucket/aws"
-  version = "4.10.0"
+  version = "4.12.0"
 
   bucket_name        = local.bucket_name
   acl                = var.acl
@@ -37,9 +37,10 @@ module "aws_s3_bucket" {
     prefix      = "${var.access_log_bucket_prefix}${local.bucket_name}/"
   }]
 
-  sse_algorithm      = var.sse_algorithm
-  kms_master_key_arn = var.kms_master_key_arn
-  bucket_key_enabled = var.bucket_key_enabled
+  sse_algorithm            = var.sse_algorithm
+  kms_master_key_arn       = var.kms_master_key_arn
+  bucket_key_enabled       = var.bucket_key_enabled
+  blocked_encryption_types = var.blocked_encryption_types
 
   allow_encrypted_uploads_only = var.allow_encrypted_uploads_only
   allow_ssl_requests_only      = var.allow_ssl_requests_only
