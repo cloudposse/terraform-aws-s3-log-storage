@@ -107,6 +107,16 @@ variable "bucket_key_enabled" {
   nullable    = false
 }
 
+variable "blocked_encryption_types" {
+  type        = list(string)
+  description = <<-EOT
+  List of encryption types to block for the S3 bucket. Set to `["NONE"]` on
+  AWS provider >= 6.22.0 to prevent perpetual SSE configuration drift.
+  Defaults to `null` (omitted) for backward compatibility with older providers.
+  EOT
+  default     = null
+}
+
 variable "block_public_acls" {
   type        = bool
   description = "Set to `false` to disable the blocking of new public access lists on the bucket"
