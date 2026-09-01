@@ -17,7 +17,7 @@ module "bucket_name" {
 
 module "aws_s3_bucket" {
   source  = "cloudposse/s3-bucket/aws"
-  version = "4.10.0"
+  version = "4.15.0"
 
   bucket_name        = local.bucket_name
   acl                = var.acl
@@ -51,6 +51,7 @@ module "aws_s3_bucket" {
 
   s3_object_ownership = var.s3_object_ownership
 
+  object_lock_enabled       = var.object_lock_enabled
   object_lock_configuration = var.object_lock_configuration
 
   context = module.this.context
