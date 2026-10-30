@@ -41,9 +41,6 @@ related:
   - name: terraform-aws-user-data-s3-backend
     description: Terraform Module to Offload User Data to S3
     url: https://github.com/cloudposse/terraform-aws-user-data-s3-backend
-  - name: terraform-aws-s3-logs-athena-query
-    description: A Terraform module that creates an Athena Database and Structure for querying S3 access logs
-    url: https://github.com/cloudposse/terraform-aws-s3-logs-athena-query
   - name: terraform-aws-lb-s3-bucket
     description: Terraform module to provision an S3 bucket with built in IAM policy to allow AWS Load Balancers to ship access logs
     url: https://github.com/cloudposse/terraform-aws-lb-s3-bucket
